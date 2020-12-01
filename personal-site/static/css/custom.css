@@ -1,0 +1,13 @@
+.custom-header img {
+    float: right;
+    width: auto;
+    height: 25%;
+    display: inline-block;
+    filter: grayscale(100%);
+  }
+  
+  .custom-header h1 {
+    float: left;
+    top: 18px;
+    left: 10px;
+  }
