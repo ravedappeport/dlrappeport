@@ -14,6 +14,11 @@ menu:
     title: Posts
     url: /posts/
     weight: 0
+  - identifier: about
+    name: About
+    title: About
+    url: /about/
+    weight: 0
 
 params:
   author: "David L. Rappeport"
