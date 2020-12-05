@@ -9,7 +9,7 @@
     /* margin: auto; */
     max-width: 10%;
     max-height: 50px;
-    position: fixed;    
+    position: relative;    
     left: 50%;
     top: 18px;
     /* object-fit: cover; */
