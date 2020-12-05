@@ -1,0 +1,40 @@
+languageCode: "en-us"
+baseUrl: ""
+title: "David L. Rappeport"
+theme: "anubis"
+paginate: 10
+disqusShortname: yourdiscussshortname
+googleAnalytics: UA-123-45
+enableRobotsTXT: true
+
+menu:
+  main:
+  - identifier: posts
+    name: Posts
+    title: Posts
+    url: /posts/
+    weight: 0
+  - identifier: about
+    name: About
+    title: About
+    url: /about/
+    weight: 0
+
+params:
+  author: "David L. Rappeport"
+  description: "Work in Progress"
+  images:
+    - images/og-featured.png # relative path to "static" directory
+  custom_css:
+    - css/custom.css # relative path to "assets" directory
+  # customJS:
+  #   - js/main.js # relative path to "assets" directory
+  dateFormat: "2006-01-02"
+  paginationSinglePost: true
+  style: dark-without-switcher
+  readMore: false
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true # enable raw HTML in Markdown
