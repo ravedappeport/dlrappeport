@@ -1,0 +1,11 @@
+# ignore data directory
+data/
+
+# DS_Store
+*.DS_Store
+
+# csvs
+*.csv
+
+# ipynb_checkpoints
+.ipynb_checkpoints
