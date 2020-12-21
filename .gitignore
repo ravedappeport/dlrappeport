@@ -9,3 +9,10 @@ data/
 
 # ipynb_checkpoints
 .ipynb_checkpoints
+
+# Hugo default output directory
+personal-site/public
+
+## OS Files
+# OSX
+.DS_Store*
