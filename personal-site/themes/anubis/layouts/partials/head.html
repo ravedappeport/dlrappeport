@@ -37,4 +37,8 @@
     {{ template "_internal/google_analytics_async.html" . }}
 {{ end }}
 
+{{ if .Params.plotly }}
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+{{ end }}
+
 {{ partial "head-extra.html" . }}
