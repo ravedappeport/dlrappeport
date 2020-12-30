@@ -12,7 +12,7 @@ About two months ago, I was introduced to a work of the University of Vermont Co
 > **“What is being measured by the instrument?”** <br><br>
  hedonometer.org currently measures Twitter’s Decahose API feed (formerly Gardenhose). The stream reflects a 10% random sampling of the roughly  500 million messages posted to the service daily, comprising roughly 100GB of raw JSON each day. Words in messages we determine to be written  in English are thrown into a large bag containing roughly 200 million words per day. This bag is then assigned a happiness score based on the  average happiness score of the words contained within. While "bag-of-words" approaches can be problematic for small collections of text, we  have found the methodology to work well at the large scale.
 
-My introduction to the Hedonometer came via Gimlet Media's Replay All podcast. I was always going to find a quantitative measure of global happiness interesting but what struck me most as I listened to the show's hosts talk to the creators of the Hedonometer was that this seemed like ai cool project for me to try to recreate on my own. So ... that is exactly what I did and below is a brief write-up of my attempt. 
+My introduction to the Hedonometer came via Gimlet Media's Replay All podcast. I was always going to find a quantitative measure of global happiness interesting but what struck me most as I listened to the show's hosts talk to the creators of the Hedonometer was that this seemed like a cool project for me to try to recreate on my own. So ... that is exactly what I did and below is a brief write-up of my attempt. 
 
 ## Sleuthing Around
 
@@ -80,23 +80,64 @@ I am sure this has been said before and I am stealing this idea from a smarter p
 
 ## The New York Times
 
-One of the more interesting applications I could think of for my hedonometer was to do an analysis of the news media. As it turns out, the New York Times has fantastic, public APIs, specifically the `archive` endpoint. 
+One of the more interesting applications I could think of for my hedonometer was to do an analysis of the news media. As it turns out, the New York Times has fantastic, public APIs specifically the `archive` endpoint. 
 
 >The Archive API returns an array of NYT articles for a given month, going back to 1851. Its response fields are the same as the Article Search API. The Archive API is very useful if you want to build your own database of NYT article metadata. You simply pass the API the year and month and it returns a JSON object with all articles for that month. The response size can be large (~20mb).
 
-Here is a look at average hedonometer scores for articles in November of each year going back to 1851. In total, this chart comprises 1.2 million headlines and 81 million words.
+Here is a look at average hedonometer scores for articles each month of each year going back 100 years to 1920.
 <br>
-{{< plotly json="/plotly/hedonometer/nyt-november-headlines.json" height="400px" >}}
+{{< plotly json="/plotly/hedonometer/nyt-hist-headlines.json" height="400px" >}}
 <br>
-In a year (2020), that seems so much worse than years in recent memory I take some solace for the general up and to the right nature of this chart. 
+In the chart above, `NYT Headlines` refers to the rolling 12 month average hedonometer score for all front page New York Times headlines and `NYT Abstract` refers to the rolling 12 month average hedonometer score of all front page New York Times article abstracts, i.e. normally 2 to 3 sentence summaries of each story. With 2020 being a year that seems so much worse than others in recent memory, I take some solace for the general up and to the right nature of this chart. That said, it is hard to ignore that rather precipitous drop in happiness that took place in 2020 and there has not been evidence of anything quite like it in the last 20 years. 
 
-Here are some headlines from some of the more interesting points of this graph. 
+The chart also highlights that on average headlines are "unhappier" than their respective abstracts. I don't find this surprising and anecdotally I suspect that language in headlines is meant to grab attention and thus will use words that have more extreme hedonometer scores without fully providing the same context that is available in the article abstract. This doesn't explain the pervasive trend of headlines being more unhappy than happy compared to the articles they are attached to.
 
-**1856**
+The University of Vermont's Hedonometer has a clever mathematical operation for determining which words had the greatest contribution for the delta in average happiness from one period to another called *Word Shifts*. It could be an interesting follow up to this analysis to calculate the period over period word shifts but for the time being I've decided against digging in too much further just given the size of the data involved that I've sucked down onto my laptop locally. The chart above represents analysis of over 44 million words and 26.4 gb of json responses. 
 
+All of that being said, I think its still interesting to just look at a random sampling of the front page headlines and articles for some of the bigger inflection points in this time series. The dates below represent a random selection of some of the larger inflections in the `NYT Abstract` time series.
+
+**October 1940**
+>TOKYO AMERICANS HEED U.S. WARNINC TO FLEE FAR EAST; 100 Wives and Children of Business Men Sail--Many Passages Are Booked SHANGHAI AWAITS LINERS Hull Says Plenty of Ships Will Be Available to Bring Back Citizens From Orient
+ reservists in Shanghai get physical exams; to rept for duty
+ 
+
+>Willkie Says 'Common Law' Of Nation Bars Third Term; He Asserts in Louisville New Dealers Seek End of Two-Party System--Insists Roosevelt Caused Arms Lag
+ Willkie s, Louisville; text; tours Ill and Ind; s, Indianapolis
+ 
+ **December 1964**
+ >Weary Pope Returns From India to Joyful Welcome
+ Pope returns to Rome; illus; Turkish Air Force jet buzzes his plane; flight described
+ 
+
+>Front Page 3 -- No Title
+ CANCER AND VIRUSES. Free lecture for the public tonight. 8:30. N. Y. Academy of .Medicine, 2 E. 105.&#8212; Adit.
+ 
+
+ **February 2001**
+ >It's Not Just AT&T: How Telecom Became a Black Hole
+ Floyd Norris comment on continuing descent of telecommunications industry; blames situation on too much capital investment and economic slowdown; says financial markets have still not fully discounted pain to come, and neither have rosy economic forceasts that assume economic slowdown will be brief one; cites financial problems at AT&T, Lucent Technologies, France Telecom, British Telecommunications, Deutsche Telekom, VoiceStream Wireless and Nortel Networks; graph (M)
+ 
+
+>Seton Hall Wonders After Loss To Syracuse
+ Syracuse defeats Seton Hall, 63 to 62, in college basketball; photos (M)
+ 
+ **September 2020**
+ >Inside eBay’s Cockroach Cult: The Ghastly Story of a Stalking Scandal
+ “People are basically good” was eBay’s founding principle. But in the deranged summer of 2019, prosecutors say, a campaign to terrorize a blogger crawled out of a dark place in the corporate soul.
+ 
+
+>How Colleges Became the New Covid Hot Spots
+ Like meatpacking plants and nursing homes early in the pandemic, campuses across the country are experiencing outbreaks.
+ 
+
+## The New York Times and Twitter
 {{< plotly json="/plotly/hedonometer/nyt-twitter-rolling-avg.json" height="400px" >}}
+<br>
+Lastly, I wanted to compare hedonometer scores for Twitter from hedonometer.org directly to the scores I was calculating for New York Times front page headlines and abstracts. The chart above shows rolling 30 day averages for all three. Up until 2020, there isn't really any evidence of strong correlation between Twitter and the front page of the New York Times, but we can see how in 2020 both time series experience 2 large negative dips, first around the emergence of the Coronavirus and second around the protests against police brutality that occurred over the summer. I'm not surprised to find that in general Twitter appears to be a happier place than the front page of the New York Times, but I was surprised to see how consistently the New York Times front page is much, much unhappier. As someone who is addicted to constantly refreshing the NYT app on my iPhone this summer perhaps I should consider spending a bit more time on Twitter instead.  
 
 ## Notes
+
+I hope you found this post enjoyable. All of the code behind this analysis is publicly available on github for those who are curious. 
 
 - Much of the data being used in this analysis is coming directly from the APIs that the Hedonometer team has graciously made publicly available and I want to thank the entire team at Vermont's Computational Story Lab for their work. The foundational paper describing their methodologies in detail can be found at this [link](https://arxiv.org/abs/1101.5120) and the Hedonometer's current home is [here](https://hedonometer.org/timeseries/en_all/). 
 
