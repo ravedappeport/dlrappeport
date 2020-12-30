@@ -6,10 +6,183 @@
     <description>David L. Rappeport</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 30 Nov 2020 22:08:24 -0700</lastBuildDate>
+    <lastBuildDate>Mon, 21 Dec 2020 14:10:46 +0000</lastBuildDate>
     
     <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Hedonometer</title>
+      <link>/posts/hedonometer/</link>
+      <pubDate>Mon, 21 Dec 2020 14:10:46 +0000</pubDate>
+      
+      <guid>/posts/hedonometer/</guid>
+      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
+&lt;p&gt;About two months ago, I was introduced to a work of the University of Vermont Computational Story Lab called the Hedonometer. At its core, the Hedonometer is a large scale NLP application based on Twitter data and is used to measure &amp;ldquo;happiness&amp;rdquo; at scale. The creators do a great job summarizing this here:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;“What is being measured by the instrument?”&lt;/strong&gt; &lt;br&gt;&lt;br&gt;
+hedonometer.org currently measures Twitter’s Decahose API feed (formerly Gardenhose). The stream reflects a 10% random sampling of the roughly  500 million messages posted to the service daily, comprising roughly 100GB of raw JSON each day. Words in messages we determine to be written  in English are thrown into a large bag containing roughly 200 million words per day. This bag is then assigned a happiness score based on the  average happiness score of the words contained within. While &amp;ldquo;bag-of-words&amp;rdquo; approaches can be problematic for small collections of text, we  have found the methodology to work well at the large scale.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;My introduction to the Hedonometer came via Gimlet Media&amp;rsquo;s Replay All podcast. I was always going to find a quantitative measure of global happiness interesting but what struck me most as I listened to the show&amp;rsquo;s hosts talk to the creators of the Hedonometer was that this seemed like a cool project for me to try to recreate on my own. So &amp;hellip; that is exactly what I did and below is a brief write-up of my attempt.&lt;/p&gt;
+&lt;h2 id=&#34;sleuthing-around&#34;&gt;Sleuthing Around&lt;/h2&gt;
+&lt;p&gt;At first, I spent multiple hours messing around with Twitter&amp;rsquo;s API and open source NLP lexicon python packages (a colleague recommend vaderSentiment). What I quickly realized was the following:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;It is not easy to get large quantities of historical data from Twitter&lt;/li&gt;
+&lt;li&gt;Most of the publicly available NLP sentiment analysis packages seem to follow a similar pattern&lt;/li&gt;
+&lt;li&gt;(and this is embarrassing to admit because it took me multiple days to realize) hedonometer.org makes their lexicon scoring available via an api.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The general idea employed by both the creators of the Hedonometer and Vader Sentiment is pretty similar. Crowdsource a bunch of people to rank words/emoticon on AWS Mechanical Turk and employ a rules based system to adjust total scores. Vader&amp;rsquo;s rules set and lexicon are both fairly complex and involved, possibly suggestive of why Vader seems to perform better in my opinion (more on this later). Meanwhile, the Hedonometer seems to use a pretty simple adjustment to remove &amp;ldquo;neutral&amp;rdquo; words, words with scores between 4-6 on a 1-9 point scale.&lt;/p&gt;
+&lt;h2 id=&#34;trump-twitter&#34;&gt;Trump Twitter&lt;/h2&gt;
+&lt;p&gt;Why not start a twitter based sentiment analysis project with @realDonaldTrump? As I&amp;rsquo;ve mentioned earlier, it is difficult to come by large volumes of historical tweets and I needed a baseline to compare my &amp;ldquo;simple&amp;rdquo; hedonometer to vaderSentiment. Luckily for me, Harvard&amp;rsquo;s dataverse has a publicly available Donald Trump Twitter dataset comprising @realDonaldTrump tweets from May 2009 to November 2019: &lt;a href=&#34;https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/KJEBIL&#34;&gt;source&lt;/a&gt;.&lt;/p&gt;
+&lt;br&gt;
+
+
+&lt;div id=&#34;/plotly/hedonometer/djt-tweet-hist.json&#34; class=&#34;plotly&#34; style=&#34;height:400px&#34;&gt;&lt;/div&gt;
+&lt;script&gt;
+Plotly.d3.json(&#34;/plotly/hedonometer/djt-tweet-hist.json&#34;, function(err, fig) {
+    Plotly.plot(&#39;\/plotly\/hedonometer\/djt-tweet-hist.json&#39;, fig.data, fig.layout, {responsive: true});
+});
+&lt;/script&gt;
+&lt;br&gt;
+
+
+&lt;div id=&#34;/plotly/hedonometer/djt-corr.json&#34; class=&#34;plotly&#34; style=&#34;height:400px&#34;&gt;&lt;/div&gt;
+&lt;script&gt;
+Plotly.d3.json(&#34;/plotly/hedonometer/djt-corr.json&#34;, function(err, fig) {
+    Plotly.plot(&#39;\/plotly\/hedonometer\/djt-corr.json&#39;, fig.data, fig.layout, {responsive: true});
+});
+&lt;/script&gt;
+&lt;br&gt;
+As you can see above, there is some positive correlation here between vaderSentiment and my interpretation of the Hedonometer. I calculated a pearson&#39;s r value of ~0.64. Having looked at some histograms of the vaderSentiment and hedonometer scores of these 40 some thousand @realDonaldTrump tweets and also looking at the correlation plot above, what I suspect is going on here is that my adjustment to the hedonometer to remove the more &#34;neutral&#34; words has made the hedonometer score more sensitive on average than vaderSentiment. 
+&lt;p&gt;Let&amp;rsquo;s look at a random selection of tweets and scores:
+&lt;br&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Tweet: RT @@realDonaldTrump: ....No Obstruction. The Dems were devastated - after all this time and money spent ($40,000,000), the Mueller Report w…
+ Hedonometer Score: 6.76
+ Hedonometer Dict: {&#39;words&#39;: {&#39;all&#39;: 6.22, &#39;money&#39;: 7.3}, &#39;freq&#39;: 2}
+ Vader Score: -0.6124
+
+Tweet: With Jemele Hill at the mike, it is no wonder ESPN ratings have &amp;quot;tanked,&amp;quot; in fact, tanked so badly it is the talk of the industry!
+ Hedonometer Score: 4.875
+ Hedonometer Dict: {&#39;words&#39;: {&#39;no&#39;: 3.48, &#39;wonder&#39;: 7.08, &#39;badly&#39;: 2.88, &#39;talk&#39;: 6.06}, &#39;freq&#39;: 4}
+ Vader Score: -0.7567
+
+Tweet: RT @mike_pence: Latino Americans know that it was freedom, not socialism, that gave us the most prosperous and powerful nation in the histo…
+ Hedonometer Score: 6.0424999999999995
+ Hedonometer Dict: {&#39;words&#39;: {&#39;Americans&#39;: 6.5, &#39;know&#39;: 6.1, &#39;not&#39;: 3.86, &#39;gave&#39;: 6.26, &#39;us&#39;: 6.26, &#39;most&#39;: 6.22, &#39;powerful&#39;: 7.08, &#39;nation&#39;: 6.06}, &#39;freq&#39;: 8}
+ Vader Score: 0.8923
+
+Tweet: I can get Nancy Pelosi as many votes as she wants in order for her to be Speaker of the House. She deserves this vi… https://t.co/KiXwdFt4XQ
+ Hedonometer Score: 6.146666666666666
+ Hedonometer Dict: {&#39;words&#39;: {&#39;votes&#39;: 6.08, &#39;she&#39;: 6.18, &#39;She&#39;: 6.18}, &#39;freq&#39;: 3}
+ Vader Score: 0.0
+
+Tweet: “What happened is that Donald Trump won. Down goes Comey.” @foxandfriends
+ Hedonometer Score: 3.66
+ Hedonometer Dict: {&#39;words&#39;: {&#39;Down&#39;: 3.66}, &#39;freq&#39;: 1}
+ Vader Score: 0.5719
+&lt;/code&gt;&lt;/pre&gt;&lt;br&gt;
+If there is one take away here, it&#39;s that measuring sentiment for individual tweets is not very accurate. Because I&#39;ve constructed the &#34;simple&#34; hedonometer model myself, all that the logic is doing for each individual tweet is averaging the scored words found in the tweet. vaderSentiment has a larger lexicon and is a bit more complex (my hot take here is that it is slightly more accurate than the hedonometer at detecting underlying sentiment in individual tweets), but even vaderSentiment seems to get things wrong quite often with &#34;tweet&#34; sized text. 
+&lt;p&gt;This is something that the creator&amp;rsquo;s of the Hedonometer themselves acknowledge in their paper.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;We address several key aspects and limitations of our measurement. First, as with any sentiment analysis technique, our instrument is fallible for smaller texts, especially at the scale of a typical sentence, where ambiguity may render even human readers unable to judge meaning or tone [61]. Nevertheless, problems with small texts are not our concern, as our interest here is in dealing with and benefiting from very large data sets.
+Second, we are also effectively extracting a happiness level as perceived by a generic reader who sees only word frequency. Indeed, our method is purposefully more simplistic than traditional natural language pro- cessing (NLP) algorithms which attempt to infer mean- ing (e.g., OpinionFinder [62, 63]) but suffer from a degree of inscrutability. By ignoring the structure of a text, we are of course omitting a great deal of content; nevertheless, we have shown using bootstrap-like approaches that our method is sufficiently robust as to be meaningful for large enough texts [23].&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Given the data exploration above, I am both fairly comfortable with my simple hedonometer and also going to stick to comparing results using my simple hedonometer to scores that hedonometer.org makes publicly available via their API.&lt;/p&gt;
+&lt;p&gt;Before moving on though, some more fun with DJT tweets and sentiment analysis.
+&lt;br&gt;
+
+
+&lt;div id=&#34;/plotly/hedonometer/djt-tweets-by-hour.json&#34; class=&#34;plotly&#34; style=&#34;height:400px&#34;&gt;&lt;/div&gt;
+&lt;script&gt;
+Plotly.d3.json(&#34;/plotly/hedonometer/djt-tweets-by-hour.json&#34;, function(err, fig) {
+    Plotly.plot(&#39;\/plotly\/hedonometer\/djt-tweets-by-hour.json&#39;, fig.data, fig.layout, {responsive: true});
+});
+&lt;/script&gt;
+&lt;br&gt;
+I am sure this has been said before and I am stealing this idea from a smarter person&amp;rsquo;s article I&amp;rsquo;ve read elsewhere (if you have the link please send my way). The graph above removes retweets and shows @realDonaldTrump tweet sentiment (normalized vaderSentiment and hedonometer scores) by the hour of day EST time the tweets were sent. In the first 3 years of his Presidency, Donald Trump did the majority of his tweeting between 6 and 10 am EST time and these hours also tended to be when he sent his most negative and unhappy tweets. Looking at the 2020 time series for English speaking twitter on hedonomter.org, a single std dev. move in hedonometer scores is roughly ~0.07 points. From Election Day 2020 (11/3/2020) to the news channels announcements of Joe Biden as the next President of the United States (11/7/2020), English speaking twitter&amp;rsquo;s average happiness dipped and recovered a roughly 1.5 std dev move. The day before Thanksgiving day to Thanksgiving day 2020 was roughly equal to a single standard deviation. I feel these two facts give interesting context to the notion that based on his tweets, Donald Trump&amp;rsquo;s happiness appears to fluctuate by a &amp;ldquo;Thanksgiving Day&amp;rdquo; from 6 AM to 2 PM. I wonder how much happier I would be if he stayed of twitter until after he finished a morning round of golf.&lt;/p&gt;
+&lt;h2 id=&#34;the-new-york-times&#34;&gt;The New York Times&lt;/h2&gt;
+&lt;p&gt;One of the more interesting applications I could think of for my hedonometer was to do an analysis of the news media. As it turns out, the New York Times has fantastic, public APIs specifically the &lt;code&gt;archive&lt;/code&gt; endpoint.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The Archive API returns an array of NYT articles for a given month, going back to 1851. Its response fields are the same as the Article Search API. The Archive API is very useful if you want to build your own database of NYT article metadata. You simply pass the API the year and month and it returns a JSON object with all articles for that month. The response size can be large (~20mb).&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Here is a look at average hedonometer scores for articles each month of each year going back 100 years to 1920.
+&lt;br&gt;
+
+
+&lt;div id=&#34;/plotly/hedonometer/nyt-hist-headlines.json&#34; class=&#34;plotly&#34; style=&#34;height:400px&#34;&gt;&lt;/div&gt;
+&lt;script&gt;
+Plotly.d3.json(&#34;/plotly/hedonometer/nyt-hist-headlines.json&#34;, function(err, fig) {
+    Plotly.plot(&#39;\/plotly\/hedonometer\/nyt-hist-headlines.json&#39;, fig.data, fig.layout, {responsive: true});
+});
+&lt;/script&gt;
+&lt;br&gt;
+In the chart above, &lt;code&gt;NYT Headlines&lt;/code&gt; refers to the rolling 12 month average hedonometer score for all front page New York Times headlines and &lt;code&gt;NYT Abstract&lt;/code&gt; refers to the rolling 12 month average hedonometer score of all front page New York Times article abstracts, i.e. normally 2 to 3 sentence summaries of each story. With 2020 being a year that seems so much worse than others in recent memory, I take some solace for the general up and to the right nature of this chart. That said, it is hard to ignore that rather precipitous drop in happiness that took place in 2020 and there has not been evidence of anything quite like it in the last 20 years.&lt;/p&gt;
+&lt;p&gt;The chart also highlights that on average headlines are &amp;ldquo;unhappier&amp;rdquo; than their respective abstracts. I don&amp;rsquo;t find this surprising and anecdotally I suspect that language in headlines is meant to grab attention and thus will use words that have more extreme hedonometer scores without fully providing the same context that is available in the article abstract. This doesn&amp;rsquo;t explain the pervasive trend of headlines being more unhappy than happy compared to the articles they are attached to.&lt;/p&gt;
+&lt;p&gt;The University of Vermont&amp;rsquo;s Hedonometer has a clever mathematical operation for determining which words had the greatest contribution for the delta in average happiness from one period to another called &lt;em&gt;Word Shifts&lt;/em&gt;. It could be an interesting follow up to this analysis to calculate the period over period word shifts but for the time being I&amp;rsquo;ve decided against digging in too much further just given the size of the data involved that I&amp;rsquo;ve sucked down onto my laptop locally. The chart above represents analysis of over 44 million words and 26.4 gb of json responses.&lt;/p&gt;
+&lt;p&gt;All of that being said, I think its still interesting to just look at a random sampling of the front page headlines and articles for some of the bigger inflection points in this time series. The dates below represent a random selection of some of the larger inflections in the &lt;code&gt;NYT Abstract&lt;/code&gt; time series.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;October 1940&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;TOKYO AMERICANS HEED U.S. WARNINC TO FLEE FAR EAST; 100 Wives and Children of Business Men Sail&amp;ndash;Many Passages Are Booked SHANGHAI AWAITS LINERS Hull Says Plenty of Ships Will Be Available to Bring Back Citizens From Orient
+reservists in Shanghai get physical exams; to rept for duty&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Willkie Says &amp;lsquo;Common Law&amp;rsquo; Of Nation Bars Third Term; He Asserts in Louisville New Dealers Seek End of Two-Party System&amp;ndash;Insists Roosevelt Caused Arms Lag
+Willkie s, Louisville; text; tours Ill and Ind; s, Indianapolis&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;December 1964&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Weary Pope Returns From India to Joyful Welcome
+Pope returns to Rome; illus; Turkish Air Force jet buzzes his plane; flight described&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Front Page 3 &amp;ndash; No Title
+CANCER AND VIRUSES. Free lecture for the public tonight. 8:30. N. Y. Academy of .Medicine, 2 E. 105.— Adit.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;February 2001&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;It&amp;rsquo;s Not Just AT&amp;amp;T: How Telecom Became a Black Hole
+Floyd Norris comment on continuing descent of telecommunications industry; blames situation on too much capital investment and economic slowdown; says financial markets have still not fully discounted pain to come, and neither have rosy economic forceasts that assume economic slowdown will be brief one; cites financial problems at AT&amp;amp;T, Lucent Technologies, France Telecom, British Telecommunications, Deutsche Telekom, VoiceStream Wireless and Nortel Networks; graph (M)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Seton Hall Wonders After Loss To Syracuse
+Syracuse defeats Seton Hall, 63 to 62, in college basketball; photos (M)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;September 2020&lt;/strong&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Inside eBay’s Cockroach Cult: The Ghastly Story of a Stalking Scandal
+“People are basically good” was eBay’s founding principle. But in the deranged summer of 2019, prosecutors say, a campaign to terrorize a blogger crawled out of a dark place in the corporate soul.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;p&gt;How Colleges Became the New Covid Hot Spots
+Like meatpacking plants and nursing homes early in the pandemic, campuses across the country are experiencing outbreaks.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;the-new-york-times-and-twitter&#34;&gt;The New York Times and Twitter&lt;/h2&gt;
+&lt;p&gt;
+
+&lt;div id=&#34;/plotly/hedonometer/nyt-twitter-rolling-avg.json&#34; class=&#34;plotly&#34; style=&#34;height:400px&#34;&gt;&lt;/div&gt;
+&lt;script&gt;
+Plotly.d3.json(&#34;/plotly/hedonometer/nyt-twitter-rolling-avg.json&#34;, function(err, fig) {
+    Plotly.plot(&#39;\/plotly\/hedonometer\/nyt-twitter-rolling-avg.json&#39;, fig.data, fig.layout, {responsive: true});
+});
+&lt;/script&gt;
+&lt;br&gt;
+Lastly, I wanted to compare hedonometer scores for Twitter from hedonometer.org directly to the scores I was calculating for New York Times front page headlines and abstracts. The chart above shows rolling 30 day averages for all three. Up until 2020, there isn&amp;rsquo;t really any evidence of strong correlation between Twitter and the front page of the New York Times, but we can see how in 2020 both time series experience 2 large negative dips, first around the emergence of the Coronavirus and second around the protests against police brutality that occurred over the summer. I&amp;rsquo;m not surprised to find that in general Twitter appears to be a happier place than the front page of the New York Times, but I was surprised to see how consistently the New York Times front page is much, much unhappier. As someone who is addicted to constantly refreshing the NYT app on my iPhone this summer perhaps I should consider spending a bit more time on Twitter instead.&lt;/p&gt;
+&lt;h2 id=&#34;notes&#34;&gt;Notes&lt;/h2&gt;
+&lt;p&gt;I hope you found this post enjoyable. All of the code behind this analysis is publicly available on github for those who are curious.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Much of the data being used in this analysis is coming directly from the APIs that the Hedonometer team has graciously made publicly available and I want to thank the entire team at Vermont&amp;rsquo;s Computational Story Lab for their work. The foundational paper describing their methodologies in detail can be found at this &lt;a href=&#34;https://arxiv.org/abs/1101.5120&#34;&gt;link&lt;/a&gt; and the Hedonometer&amp;rsquo;s current home is &lt;a href=&#34;https://hedonometer.org/timeseries/en_all/&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;I&amp;rsquo;ve also made heavy use of the public APIs of both Twitter and the New York Times. Links to their respective API documentation can be found &lt;a href=&#34;https://developer.twitter.com/en/docs&#34;&gt;here&lt;/a&gt; and &lt;a href=&#34;https://developer.nytimes.com/apis&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Credit for introducing me to the Hedonometer is owed to Gimlet Media&amp;rsquo;s Reply All podcast and the Hedonometer was featured in this episode:&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;iframe scrolling=&#34;no&#34; frameborder=&#34;0&#34; width=&#34;100%&#34; height=&#34;152&#34; allowtransparency=&#34;true&#34; allow=&#34;encrypted-media&#34; src=&#34;https://open.spotify.com/embed/episode/2AwPOVANlKj2GbmKRcBKYF&#34;&gt;&lt;/iframe&gt;
+</description>
+    </item>
     
     <item>
       <title>Coming Soon</title>
