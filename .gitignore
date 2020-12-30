@@ -1,8 +1,24 @@
+# ignore data directory
+data/
+
+# DS_Store
+.DS_Store
+
+# csvs
+*.csv
+
+# pickled files
+*.pkl
+
+# json files
+*.json
+
+# ipynb_checkpoints
+.ipynb_checkpoints
 
 # Hugo default output directory
-/personal-site/public
-personal-site/themes
+personal-site/public
 
 ## OS Files
 # OSX
-.DS_Store*
+.DS_Store
