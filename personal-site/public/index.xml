@@ -6,10 +6,28 @@
     <description>David L. Rappeport</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 21 Dec 2020 14:10:46 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 04 Jan 2021 01:20:14 +0000</lastBuildDate>
     
     <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>About Me</title>
+      <link>/about/about/</link>
+      <pubDate>Mon, 04 Jan 2021 01:20:14 +0000</pubDate>
+      
+      <guid>/about/about/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;/img/aboutMe/dlrappeport.jpeg&#34; style=&#34;text-align: center;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;I live in New York City and currently work at Bread, a technology company that partners with e-commerce merchants and financial institutions to create pay over time solutions. This is my personal website and a place where I hope to keep myself intellectually honest about topics that interest me. At the moment, these topics fall broadly into the following:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Data science&lt;/li&gt;
+&lt;li&gt;Technology and startups&lt;/li&gt;
+&lt;li&gt;Intersection of data analytics and professional sports&lt;/li&gt;
+&lt;li&gt;Misc recipes&lt;/li&gt;
+&lt;li&gt;Anything else I may feel like writing about in a particular month&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>Hedonometer</title>
