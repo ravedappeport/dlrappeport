@@ -10,7 +10,6 @@ I live in New York City and currently work at Bread, a technology company that p
 
 - Data science
 - Technology and startups
-- Intersection of data analytics and professional sports
 - Misc recipes
 - Anything else I may feel like writing about in a particular month
 
