@@ -17,7 +17,7 @@ menu:
   - identifier: about
     name: About
     title: About
-    url: /about/
+    url: /about/about
     weight: 0
 
 params:
