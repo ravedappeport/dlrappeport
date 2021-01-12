@@ -9,6 +9,7 @@ data/
 
 # pickled files
 *.pkl
+*.pickle
 
 # json files
 *.json
