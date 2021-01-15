@@ -20,6 +20,3 @@ data/
 # Hugo default output directory
 personal-site/public
 
-## OS Files
-# OSX
-.DS_Store
