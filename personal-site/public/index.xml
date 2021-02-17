@@ -6,10 +6,30 @@
     <description>David L. Rappeport</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 04 Jan 2021 01:20:14 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 17 Feb 2021 05:37:13 +0000</lastBuildDate>
     
     <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Diamonds Forever</title>
+      <link>/posts/diamonds-forever/</link>
+      <pubDate>Wed, 17 Feb 2021 05:37:13 +0000</pubDate>
+      
+      <guid>/posts/diamonds-forever/</guid>
+      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
+&lt;h2 id=&#34;diamond-data&#34;&gt;Diamond Data&lt;/h2&gt;
+&lt;br&gt;
+
+
+&lt;div id=&#34;/plotly/diamonds-forever/diamond-carat-price-chart.json&#34; class=&#34;plotly&#34; style=&#34;height:400px&#34;&gt;&lt;/div&gt;
+&lt;script&gt;
+Plotly.d3.json(&#34;/plotly/diamonds-forever/diamond-carat-price-chart.json&#34;, function(err, fig) {
+    Plotly.plot(&#39;\/plotly\/diamonds-forever\/diamond-carat-price-chart.json&#39;, fig.data, fig.layout, {responsive: true});
+});
+&lt;/script&gt;
+&lt;br&gt;</description>
+    </item>
     
     <item>
       <title>About Me</title>

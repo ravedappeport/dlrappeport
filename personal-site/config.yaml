@@ -3,7 +3,7 @@ baseUrl: ""
 title: "David L. Rappeport"
 theme: "anubis"
 paginate: 10
-disqusShortname: yourdiscussshortname
+# disqusShortname: yourdiscussshortname
 googleAnalytics: UA-123-45
 enableRobotsTXT: true
 
