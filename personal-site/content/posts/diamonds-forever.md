@@ -10,10 +10,6 @@ Time for a brief personal note. On January 29th 2021, I took the big leap and pr
 ![victory-photo](/img/diamonds-forever/victory-photo.JPG)
 <br>
 While I could definitely write more about the weekend we had, I am instead going to spend the rest of this post writing about something I wish I had found better information about online. 
-<br><br>
-*cracks knuckles* 
-<br><br>
-So without further ado, I am going to write a post about diamonds. Specifically, I am going to write about buying diamond engagement rings online and digging deeply into how loose and lab diamonds are priced. If you are a data-minded individual who has saved up a pretty penny for an engagement ring, then this post is for you.
 
 ## Background
 
