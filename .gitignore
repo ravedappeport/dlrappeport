@@ -14,6 +14,9 @@ data/
 # json files
 *.json
 
+# img folder
+personal-site/static/img
+
 # ipynb_checkpoints
 .ipynb_checkpoints
 
