@@ -39,11 +39,11 @@ print(diamond_df.sample(n=5, random_state=0).to_markdown())
 
 |        | shape    |   price |   carat | cut         | color   | clarity   | vendor          | is_lab   |   log_price |
 |-------:|:---------|--------:|--------:|:------------|:--------|:----------|:----------------|:---------|------------:|
-|   6412 | Round    |     740 |    0.3  | Ideal       | F       | SI1       | Brilliant Earth | False    |     2.86923 |
-|  34866 | Round    |    1110 |    0.4  | Ideal       | F       | SI1       | Brilliant Earth | False    |     3.04532 |
-| 164602 | Round    |    2020 |    1.2  | Super Ideal | J       | VS1       | Brilliant Earth | True     |     3.30535 |
-|  45097 | Marquise |    1220 |    0.5  | Good        | H       | SI1       | Brilliant Earth | False    |     3.08636 |
-| 481003 | Round    |    3720 |    1.04 | Very Good   | F       | I1        | James Allen     | False    |     3.57054 |
+|   6412 | Round    |     740 |    0.3  | Ideal       | F       | SI1       | Brilliant Earth | False    |     6.60665 |
+|  34866 | Round    |    1110 |    0.4  | Ideal       | F       | SI1       | Brilliant Earth | False    |     7.01212 |
+| 164602 | Round    |    2020 |    1.2  | Super Ideal | J       | VS1       | Brilliant Earth | True     |     7.61085 |
+|  45097 | Marquise |    1220 |    0.5  | Good        | H       | SI1       | Brilliant Earth | False    |     7.10661 |
+| 481003 | Round    |    3720 |    1.04 | Very Good   | F       | I1        | James Allen     | False    |     8.22148 |
 ```
 
 Here is an interactive plot showing carat and log price grouped by vendor and whether or not the diamond is a "loose" diamond or a lab diamond. 
@@ -65,7 +65,13 @@ Lab diamonds that are used as gemstones are produced using CVD (Chemical Vapor D
 ...back to the data...
 
 ## Linear Model to Get Us Going
-One obvious way to try to get a sense of what features have the greatest impact on diamond price is to run a simple linear regression using the base 10 logarithm of price as a dependent variable. Why log transform your dependent variable you might say? The short answer here is that you always want to avoid skewed distribution in residuals. By using a log transformation, we are reducing skewness in our dependent variable and approximating a normal distribution thus helping to alleviate risk of skewed residuals. Ohh....one more thing...there are a lot of categorical variables involved in this dataset: color, clarity, cut, etc. In order to better handle for these, I've done a one-hot encoding transformation to turn these into dummy variables. Also, because we know that some of these categorical dummmies are perfectly correlated with each other, if a diamond is color E it cant also be color F, I've removed the following columns `['Fair', 'K', 'I1' , 'Blue Nile','Emerald', 'price']` from the datatset and added a constant term. Because we've removed the above dummmies, the constant in the regression results below captures the variance for a Fair cut, K colored, I1 clarity, Blue Nile emerald shaped diamond.
+One obvious way to try to get a sense of what features have the greatest impact on diamond price is to run a simple linear regression using the natural logarithm of price as a dependent variable. Why log transform your dependent variable you might say? The short answer here is that you always want to avoid skewed distribution in the residuals. By using a log transformation, we are reducing skewness in our dependent variable and approximating a normal distribution thus helping to alleviate this risk. An additional benefit of using the natural log to transform our dependent variable is that it makes interpretation of the coefficients relatively straightforward as a coefficient of `.15` equates to a percentage increase of `(exp(.15) - 1) * 100` in our dependent variable: 
+
+```
+In [10]: (math.exp(.15)-1)*1e2
+Out[10]: 16.183424272828304
+```
+So in the example above, our `.15` coefficient equates to a ~16.2 % increase in our dependent variable. Ohh....one more thing...there are a lot of categorical variables involved in this dataset: color, clarity, cut, etc. In order to better handle for these, I've done one-hot encoding to turn these into dummy variables. Also, because we know that some of these categorical dummmies are perfectly correlated with each other, if a diamond is color E it cant also be color F, I've removed the following columns `['Fair', 'K', 'I1' , 'Blue Nile','Emerald', 'price']` from the datatset and added a constant term. Because we've removed the above dummmies, the constant in the regression results below captures the variance for a Fair cut, K colored, I1 clarity, Blue Nile emerald shaped diamond.
 
 ```
                             OLS Regression Results                            
@@ -73,48 +79,48 @@ One obvious way to try to get a sense of what features have the greatest impact 
 Dep. Variable:              log_price   R-squared:                       0.831
 Model:                            OLS   Adj. R-squared:                  0.831
 Method:                 Least Squares   F-statistic:                 7.073e+04
-Date:                Wed, 17 Feb 2021   Prob (F-statistic):               0.00
-Time:                        20:49:53   Log-Likelihood:             1.2306e+05
-No. Observations:              461453   AIC:                        -2.461e+05
-Df Residuals:                  461420   BIC:                        -2.457e+05
+Date:                Thu, 18 Feb 2021   Prob (F-statistic):               0.00
+Time:                        07:08:13   Log-Likelihood:            -2.6180e+05
+No. Observations:              461453   AIC:                         5.237e+05
+Df Residuals:                  461420   BIC:                         5.240e+05
 Df Model:                          32                                         
 Covariance Type:            nonrobust                                         
 ===================================================================================
                       coef    std err          t      P>|t|      [0.025      0.975]
 -----------------------------------------------------------------------------------
-const               2.2473      0.009    254.261      0.000       2.230       2.265
-carat               0.7369      0.001   1440.295      0.000       0.736       0.738
-is_lab             -0.3724      0.001   -426.629      0.000      -0.374      -0.371
-Asscher             0.0329      0.006      5.434      0.000       0.021       0.045
-Cushion             0.0414      0.003     13.902      0.000       0.036       0.047
-Heart               0.0808      0.005     15.468      0.000       0.071       0.091
-Marquise            0.0833      0.004     19.611      0.000       0.075       0.092
-Oval                0.0621      0.002     27.629      0.000       0.058       0.067
-Pear                0.0796      0.003     31.382      0.000       0.075       0.085
-Princess            0.0055      0.003      1.963      0.050     8.5e-06       0.011
-Radiant             0.0443      0.004     10.026      0.000       0.036       0.053
-Round               0.1438      0.002     72.221      0.000       0.140       0.148
-Good               -0.0505      0.008     -6.085      0.000      -0.067      -0.034
-Ideal              -0.0166      0.008     -2.034      0.042      -0.033      -0.001
-Super Ideal         0.0060      0.008      0.736      0.462      -0.010       0.022
-Very Good          -0.0350      0.008     -4.294      0.000      -0.051      -0.019
-D                   0.2779      0.002    169.315      0.000       0.275       0.281
-E                   0.2532      0.002    155.457      0.000       0.250       0.256
-F                   0.2505      0.002    152.106      0.000       0.247       0.254
-G                   0.2535      0.002    153.388      0.000       0.250       0.257
-H                   0.2268      0.002    133.833      0.000       0.224       0.230
-I                   0.1613      0.002     93.614      0.000       0.158       0.165
-J                   0.0995      0.002     56.110      0.000       0.096       0.103
-FL                  0.5412      0.005     98.989      0.000       0.530       0.552
-IF                  0.3044      0.003    117.193      0.000       0.299       0.310
-SI1                 0.1520      0.002     68.721      0.000       0.148       0.156
-SI2                 0.0922      0.002     41.181      0.000       0.088       0.097
-VS1                 0.2397      0.002    107.610      0.000       0.235       0.244
-VS2                 0.2165      0.002     97.522      0.000       0.212       0.221
-VVS1                0.2683      0.002    113.775      0.000       0.264       0.273
-VVS2                0.2565      0.002    113.016      0.000       0.252       0.261
-Brilliant Earth     0.0102      0.001      8.412      0.000       0.008       0.013
-James Allen        -0.0049      0.001     -4.605      0.000      -0.007      -0.003
+const               5.1746      0.020    254.261      0.000       5.135       5.214
+carat               1.6968      0.001   1440.295      0.000       1.695       1.699
+is_lab             -0.8574      0.002   -426.629      0.000      -0.861      -0.853
+Asscher             0.0757      0.014      5.434      0.000       0.048       0.103
+Cushion             0.0953      0.007     13.902      0.000       0.082       0.109
+Heart               0.1861      0.012     15.468      0.000       0.163       0.210
+Marquise            0.1919      0.010     19.611      0.000       0.173       0.211
+Oval                0.1430      0.005     27.629      0.000       0.133       0.153
+Pear                0.1833      0.006     31.382      0.000       0.172       0.195
+Princess            0.0126      0.006      1.963      0.050    1.96e-05       0.025
+Radiant             0.1020      0.010     10.026      0.000       0.082       0.122
+Round               0.3312      0.005     72.221      0.000       0.322       0.340
+Good               -0.1162      0.019     -6.085      0.000      -0.154      -0.079
+Ideal              -0.0382      0.019     -2.034      0.042      -0.075      -0.001
+Super Ideal         0.0138      0.019      0.736      0.462      -0.023       0.051
+Very Good          -0.0806      0.019     -4.294      0.000      -0.117      -0.044
+D                   0.6399      0.004    169.315      0.000       0.633       0.647
+E                   0.5830      0.004    155.457      0.000       0.576       0.590
+F                   0.5768      0.004    152.106      0.000       0.569       0.584
+G                   0.5837      0.004    153.388      0.000       0.576       0.591
+H                   0.5223      0.004    133.833      0.000       0.515       0.530
+I                   0.3714      0.004     93.614      0.000       0.364       0.379
+J                   0.2290      0.004     56.110      0.000       0.221       0.237
+FL                  1.2461      0.013     98.989      0.000       1.221       1.271
+IF                  0.7010      0.006    117.193      0.000       0.689       0.713
+SI1                 0.3500      0.005     68.721      0.000       0.340       0.360
+SI2                 0.2123      0.005     41.181      0.000       0.202       0.222
+VS1                 0.5520      0.005    107.610      0.000       0.542       0.562
+VS2                 0.4984      0.005     97.522      0.000       0.488       0.508
+VVS1                0.6177      0.005    113.775      0.000       0.607       0.628
+VVS2                0.5905      0.005    113.016      0.000       0.580       0.601
+Brilliant Earth     0.0235      0.003      8.412      0.000       0.018       0.029
+James Allen        -0.0112      0.002     -4.605      0.000      -0.016      -0.006
 ==============================================================================
 Omnibus:                    95161.361   Durbin-Watson:                   2.003
 Prob(Omnibus):                  0.000   Jarque-Bera (JB):           312020.298
@@ -124,6 +130,46 @@ Kurtosis:                       6.445   Cond. No.                         130.
 
 Notes:
 [1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+```
+
+lorem ipsum lorem ipsum blah blah....
+
+```
+|                 |   coefficients |     p_delta |   p_delta_low |   p_delta_high |
+|:----------------|---------------:|------------:|--------------:|---------------:|
+| const           |      5.17457   | 175.721     |  168.81       |   182.912      |
+| carat           |      1.69683   |   4.45664   |    4.44405    |     4.46925    |
+| is_lab          |     -0.857427  |  -0.575748  |   -0.577416   |    -0.574073   |
+| Asscher         |      0.0756715 |   0.0786082 |    0.0495655  |     0.108455   |
+| Cushion         |      0.095304  |   0.0999932 |    0.0853125  |     0.114872   |
+| Heart           |      0.186117  |   0.204563  |    0.176488   |     0.233308   |
+| Marquise        |      0.191853  |   0.211492  |    0.188484   |     0.234946   |
+| Oval            |      0.143012  |   0.153743  |    0.142098   |     0.165508   |
+| Pear            |      0.183312  |   0.201189  |    0.187516   |     0.21502    |
+| Princess        |      0.0126225 |   0.0127025 |    1.9579e-05 |     0.0255463  |
+| Radiant         |      0.101967  |   0.107347  |    0.0854912  |     0.129643   |
+| Round           |      0.331151  |   0.392569  |    0.380111   |     0.405141   |
+| Good            |     -0.116172  |  -0.109677  |   -0.142379   |    -0.0757294  |
+| Ideal           |     -0.0382252 |  -0.0375039 |   -0.0723039  |    -0.00139838 |
+| Super Ideal     |      0.0138274 |   0.0139235 |   -0.0227301  |     0.0519517  |
+| Very Good       |     -0.0806462 |  -0.07748   |   -0.110818   |    -0.0428921  |
+| D               |      0.639936  |   0.89636   |    0.882364   |     0.91046    |
+| E               |      0.582988  |   0.791384  |    0.778265   |     0.804599   |
+| F               |      0.57684   |   0.780404  |    0.767219   |     0.793686   |
+| G               |      0.58371   |   0.792677  |    0.779356   |     0.806098   |
+| H               |      0.522322  |   0.685938  |    0.673091   |     0.698884   |
+| I               |      0.371373  |   0.449724  |    0.438495   |     0.46104    |
+| J               |      0.229027  |   0.257376  |    0.247357   |     0.267475   |
+| FL              |      1.24614   |   2.47691   |    2.39217    |     2.56376    |
+| IF              |      0.700981  |   1.01573   |    0.992236   |     1.0395     |
+| SI1             |      0.350047  |   0.419135  |    0.405037   |     0.433374   |
+| SI2             |      0.212314  |   0.236536  |    0.224104   |     0.249095   |
+| VS1             |      0.552021  |   0.736759  |    0.719385   |     0.754309   |
+| VS2             |      0.498421  |   0.646119  |    0.629712   |     0.662692   |
+| VVS1            |      0.617705  |   0.854667  |    0.835036   |     0.874508   |
+| VVS2            |      0.590518  |   0.804923  |    0.786533   |     0.823502   |
+| Brilliant Earth |      0.0235072 |   0.0237857 |    0.0181934  |     0.0294087  |
+| James Allen     |     -0.0112318 |  -0.0111689 |   -0.0158852  |    -0.00643009 |
 ```
 
 
