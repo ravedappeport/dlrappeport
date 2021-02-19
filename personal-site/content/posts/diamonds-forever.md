@@ -132,7 +132,24 @@ Notes:
 [1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
 ```
 
-lorem ipsum lorem ipsum blah blah....
+Just for kicks, below is a chart showing our predicted values on the y-axis compared to our actual values on the x-axis using a portion of the diamonds data set that I've withheld from the linear model above to test its accuracy. 
+
+<br>
+{{< plotly json="/plotly/diamonds-forever/lm-prediction-chart.json" height="400px" >}}
+<br>
+
+It's a pretty good fit.
+```
+### calc mse
+mse = sum((graph_df.actual_price - graph_df.predicted_price)**2)/graph_df.shape[0]
+r = scipy.stats.pearsonr(graph_df.actual_price, graph_df.predicted_price)
+​
+print(mse, r[0]**2)
+0.17309662581335333 0.8389552879111449
+```
+But looking closely at the chart we can see places where the predictions have larger residuals. Additionally, we see a bit of a pattern where the linear model over predicts on higher and lower prices and somewhat systematically under predicts on prices more towards the middle of the range. Still, we're making fairly accurate predictions.
+
+Alright, on to the coefficients. Below is a quickly thrown together table where I've converted the coefficients above into percentage changes, titled "p_delta", using the formula I've described earlier. This makes it easier to draw insights from our model.
 
 ```
 |                 |   coefficients |     p_delta |   p_delta_low |   p_delta_high |
@@ -171,11 +188,7 @@ lorem ipsum lorem ipsum blah blah....
 | Brilliant Earth |      0.0235072 |   0.0237857 |    0.0181934  |     0.0294087  |
 | James Allen     |     -0.0112318 |  -0.0111689 |   -0.0158852  |    -0.00643009 |
 ```
-
-
-<br>
-{{< plotly json="/plotly/diamonds-forever/lm-prediction-chart.json" height="400px" >}}
-<br>
+Right away, we can see that a 1 unit increase in carat size is estimated to increase the price of our diamond between 444% - 446%. This is the largest coefficient in the model and, no surprises, the size of the diamond is the single most important feature in terms of price. Lab diamonds appear to be a great deal, reducing the price by ~57% overall. We can see the color of diamonds appears more important to price than either cut or clarity with perhaps the exception of flawless and internally flawless diamonds. Going from an I1 clarity diamond to a flawless or internally flawless increases price by ~250% or ~100% respectively. 
 
 ## XGB Knows How the Diamonds are Priced
 
