@@ -210,17 +210,85 @@ Lastly, here is an interesting tidbit from the Brilliant Earth diamond education
 {{< plotly json="/plotly/diamonds-forever/be-cut-carat.json" height="400px" >}}
 <br>
 
-All of this is evidence to say that cut feels like a feature where it isn't necessary to focus on having the "best" possible, nor does it really impact the price much. 
+In the chart above, Brilliant Earth uses the following categorization to refer to cut quality from lowest to highest quality: `['Fair', 'Good', 'Very Good', 'Ideal', 'Super Ideal']`. All of this is evidence to say that cut feels like a feature where it isn't necessary to focus on having the "best" possible, nor does it really impact the price much. 
 
+## Color
+<br>
+{{< plotly json="/plotly/diamonds-forever/be-color-carat.json" height="400px" >}}
+<br>
 
+[Color](https://www.brilliantearth.com/diamond-color/) actually does appear to have a meaningful impact on price. 
 
+```
+|    |   coefficients |   p_delta |   p_delta_low |   p_delta_high |
+|:---|---------------:|----------:|--------------:|---------------:|
+| D  |       0.639936 |  0.89636  |      0.882364 |       0.91046  |
+| E  |       0.582988 |  0.791384 |      0.778265 |       0.804599 |
+| F  |       0.57684  |  0.780404 |      0.767219 |       0.793686 |
+| G  |       0.58371  |  0.792677 |      0.779356 |       0.806098 |
+| H  |       0.522322 |  0.685938 |      0.673091 |       0.698884 |
+| I  |       0.371373 |  0.449724 |      0.438495 |       0.46104  |
+| J  |       0.229027 |  0.257376 |      0.247357 |       0.267475 |
+```
+My opinion here is that unlike cut or clarity for most gemstone quality diamonds, color is actually a feature that is discernable by the naked eye and the biggest jump in price looks to be upgrading from an `I` color to a `H` color. This would make intuitive sense as looking at diamond color grading scales we see the following for `H` and `I` colored diamond color descriptions.
 
+^H:	Near-colorless. Color noticeable when compared to diamonds of better grades, but offers excellent value.
 
+^I: Near-colorless. Slightly detected color—a good value.
 
+Going from an `I` colored diamond to the highest possible quality of color, `D`, represents a ~72 % increase in price while going from an `I` to an `H` is a ~40% increase in price. 
 
+## Clarity
+<br>
+{{< plotly json="/plotly/diamonds-forever/be-clarity-carat.json" height="400px" >}}
+<br>
 
-# XGB Knows How the Diamonds are Priced
+Next to carat and color, [clarity](https://www.brilliantearth.com/diamond-clarity/) appears to be the next most impactful of the 4 Cs in terms of price. 
+
+```
+|      |   coefficients |   p_delta |   p_delta_low |   p_delta_high |
+|:-----|---------------:|----------:|--------------:|---------------:|
+| SI2  |       0.212314 |  0.236536 |      0.224104 |       0.249095 |
+| SI1  |       0.350047 |  0.419135 |      0.405037 |       0.433374 |
+| VS2  |       0.498421 |  0.646119 |      0.629712 |       0.662692 |
+| VS1  |       0.552021 |  0.736759 |      0.719385 |       0.754309 |
+| VVS2 |       0.590518 |  0.804923 |      0.786533 |       0.823502 |
+| VVS1 |       0.617705 |  0.854667 |      0.835036 |       0.874508 |
+| IF   |       0.700981 |  1.01573  |      0.992236 |       1.0395   |
+| FL   |       1.24614  |  2.47691  |      2.39217  |       2.56376  |
+```
+Flawless diamonds are exceedingly rare and a hefty premium is charged for them. Below the "flawless" categorization, there appear to be fairly regular price differences in each step of the clarity quality ladder. While I can't truly back this claim up with data, I can say that in conversations with friends and also from my diamond shopping experience, it did not appear to me that clarity was actually that important to the beauty of the diamond above the SI1 and S12 classifications. Above this breakpoint, inclusions can only really be seen in 10x magnification and would not be discernable by the naked eye. Going back to my loosely held beliefs about diamond prices, I think that clarity contributes to a diamonds price more due to its effect on perceptions of rarity rather than objective beauty. 
+
+# XGB Model
+
+One of the benefits or always using a linear model as a starting point for an analysis like this is that it provides easy explainability of the coefficients and their respective impacts on the models predictions. As models get more and more complex, understanding what is going on inside of the "black box" becomes increasingly challenging. This is a pretty common trade off people talk about in machine learning and its normally referenced as the "accuracy vs explainability" problem.
+
+One of the best open source projects that I have come across lately is aimed squarely at addressing this issue. [Shap](https://github.com/slundberg/shap) is a game theoretic approach that attempts to explain any and every model using Shapley values. I will spare everyone the math involved but if you're interested you can find out more by reading this [medium post](https://towardsdatascience.com/interpretable-machine-learning-with-xgboost-9ec80d148d27) written by Shap's creator, Scott Lundberg, and also in this [academic paper](https://proceedings.neurips.cc/paper/2017/hash/8a20a8621978632d76c43dfd28b67767-Abstract.html). 
+
+Using Shap, let's see if we can make a better predictive model using XGBoost that will reveal some of the interactions between the features we in our diamond's data set that to put it simply, our linear model above was too simple to learn. 
+
+The chart below shows predicted vs actual values of a test split for our diamonds data set where the predictions where made by a XGBoost Regression model that I trained on a training set comprised of 80% of our diamond data with the following parameters:
+
+```
+xg_reg = xgb.XGBRegressor(
+    objective ='reg:squarederror', 
+    colsample_bytree = 0.3, 
+    learning_rate = 0.1,
+    max_depth = 4, 
+    alpha = 10, 
+    n_estimators = 500
+)
+```
 
 <br>
 {{< plotly json="/plotly/diamonds-forever/xgb-prediction-chart.json" height="400px" >}}
 <br>
+
+Ok. So its obvious, that our XGB model is great at predicting diamond prices. The chart above has a calculated R^2 of 98.9 and an MSE of 0.011, which doesn't mean anything until you go back and compare this to the MSE of the linear model 0.17. This is great but this post is about saying something intelligent about diamond prices so what does the XGB model tell us?
+
+## Shap values
+![xgb-features](/img/diamonds-forever/xgb-feature-importance.png)
+
+The chart above shows us the models calculated Shapley values for each feature and is meant to demonstrate feature importance. Before diving in more its important aspect of Shap and that is that Shapley values are derived in an additive nature i.e. a features Shap value is calculated by comparing the predicted output to the score of the model prior to adding that feature. This means that in a multivariate model all of our Shap values are additive on top of a baseline and this baseline is easiest to think of as the average value of the predictions in our training dataset. 
+
+It shouldn't be surprising to see that carat and whether or not a diamond is a lab diamond appear to be the two most important variables to diamond price. Although it is interesting to see how much the model believes that K color and I1 inclusions contribute negatively to overall price. 
