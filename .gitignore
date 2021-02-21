@@ -9,9 +9,13 @@ data/
 
 # pickled files
 *.pkl
+*.pickle
 
 # json files
 *.json
+
+# img folder
+personal-site/static/img
 
 # ipynb_checkpoints
 .ipynb_checkpoints
@@ -19,6 +23,3 @@ data/
 # Hugo default output directory
 personal-site/public
 
-## OS Files
-# OSX
-.DS_Store

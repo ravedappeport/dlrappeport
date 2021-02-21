@@ -5,7 +5,10 @@
 <meta name="referrer" content="no-referrer-when-downgrade">
 
 <title>{{ if and (.Title) (not .IsHome) }}{{ .Title }} - {{ end }}{{ .Site.Title }}</title>
-<meta name="description" content="{{ .Site.Params.description }}">
+<meta name="description" content="{{.Description | default .Site.Params.description}}">
+
+<!-- robots; currently putting in defaults -->
+<meta name="robots" content="index,follow">
 
 {{ with .OutputFormats.Get "rss" -}}
     {{ printf `<link rel="%s" type="%s" href="%s" title="%s" />` .Rel .MediaType.Type .Permalink $.Site.Title | safeHTML }}
