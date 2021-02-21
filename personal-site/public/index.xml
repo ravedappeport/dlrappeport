@@ -6,7 +6,7 @@
     <description>David L. Rappeport</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 17 Feb 2021 05:37:13 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 21 Feb 2021 18:28:25 +0000</lastBuildDate>
     
     <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,11 +14,43 @@
     <item>
       <title>Diamonds Forever</title>
       <link>/posts/diamonds-forever/</link>
-      <pubDate>Wed, 17 Feb 2021 05:37:13 +0000</pubDate>
+      <pubDate>Sun, 21 Feb 2021 18:28:25 +0000</pubDate>
       
       <guid>/posts/diamonds-forever/</guid>
-      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
-&lt;h2 id=&#34;diamond-data&#34;&gt;Diamond Data&lt;/h2&gt;
+      <description>&lt;p&gt;Time for a brief personal note. On January 29th 2021, I took the big leap and proposed to my girlfriend, Emma, at L&amp;rsquo;Auberge Resort in Sedona, Arizona. Thankfully, she said yes and we had an amazing weekend together. This photo below was taken by our photographer minutes after the proposal and captures a moment of pure bliss.
+&lt;br&gt;&lt;br&gt;
+&lt;img src=&#34;/img/diamonds-forever/victory-photo.JPG&#34; alt=&#34;victory-photo&#34;&gt;
+&lt;br&gt;
+While I could definitely write more about the weekend we had, I am instead going to spend the rest of this post writing about something I wish I had found better information about online before I proposed, diamond engagement rings.&lt;/p&gt;
+&lt;h1 id=&#34;background&#34;&gt;Background&lt;/h1&gt;
+&lt;p&gt;If you are like me when I was going through the process of looking for a diamond engagement ring online, I suspect that at times you will waffle between feelings of extreme uncertainty about what you are purchasing to feelings of extreme blasè or as Drake says, YOLO. The advice I seemed to collect from chatting with most of my engaged or married friends was, learn the 4 Cs (Cut, Color, Clarity, Carat) and to quote my friend Catherine, &amp;ldquo;&lt;em&gt;if you love her, spend all your money&lt;/em&gt;&amp;rdquo;. While this is sage advice and I did eventually purchase a ring &amp;ndash; I won&amp;rsquo;t disclose from where or how much I spent &amp;ndash; I was left wanting for more in-depth information about what diamonds cost and a better explanation why. Lo and behold, here we are.&lt;/p&gt;
+&lt;p&gt;My strategy for figuring out why diamonds cost what they do in two parts:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Scrape a ton of diamond data from popular online engagement ring sites&lt;/li&gt;
+&lt;li&gt;Build predictive models to ascertain what features are most important to diamond price&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;Disclaimer&lt;/strong&gt; The rest of this post will focus on understanding diamond price. While, rings and settings are still important and a decent chunk of change, the vast majority of  most engagement rings is the diamond gemstone and settings are easier to understand and price compare.&lt;/p&gt;
+&lt;h1 id=&#34;digging-for-diamond-data&#34;&gt;Digging for Diamond Data&lt;/h1&gt;
+&lt;p&gt;Apparently there is already a well known public diamond dataset that is used frequently by the data science community. The popular python visualization package, Seaborn, installs with the &lt;a href=&#34;https://github.com/mwaskom/seaborn-data&#34;&gt;diamonds dataset&lt;/a&gt; by default. I probably could have saved myself a lot of time by making use of the public dataset, but I do not feel that the data accurately represents the diamonds and prices that I came across when I myself was looking at diamonds online.&lt;/p&gt;
+&lt;p&gt;My approach then was to pull diamond data from three of the largest online diamond engagement ring sites:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.bluenile.com/&#34;&gt;Blue Nile&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.brilliantearth.com/&#34;&gt;Brilliant Earth&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.jamesallen.com/&#34;&gt;James Allen&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If you were to scroll through each of these sites, you will likely find that they all have a very similar UX flow. In fact, I wouldn&amp;rsquo;t be surprised if the same third party company designed the &amp;ldquo;diamond search&amp;rdquo; feature of all of their websites. My original thought was to try to use &lt;a href=&#34;https://selenium-python.readthedocs.io/installation.html#introduction&#34;&gt;Selenium&lt;/a&gt;, a web acceptance testing framework that is also useful for manipulating DOM objects and web scraping. Spending maybe 1 or 2 days mucking about with Selenium, I came to the conclusion that the dynamic html tables I was trying to manipulate were too complex and the technique I opted for instead was look through the network calls being made in a development window until I found the call to XYZ&amp;rsquo;s website backend that was returning the data. Next, I simply used python&amp;rsquo;s request library to send repeated calls to each websites backend while I manipulated the carat parameter in the request query parameters in order to steadily return different result sets.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;NOTE!!!&lt;/strong&gt; &lt;strong&gt;DO NOT&lt;/strong&gt;. I repeat, &lt;strong&gt;DO NOT&lt;/strong&gt;, mimic this method if you share an IP address with your fiancè to be and/or are not making these requests behind a VPN. For about a month, any and all programmatic advertising I saw was for diamond engagement rings. Because I had started collecting the data before I had been able to propose, I then had to live in constant fear that Emma would grow suspicious of all the diamond advertising she was seeing.&lt;/p&gt;
+&lt;p&gt;After a big some data cleaning and minimal munging &amp;ndash; James Allen uses different labels for cut compared to Brilliant Earth for example &amp;ndash; I was left with a (576820, 9) dataset that looked something like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;print(diamond_df.sample(n=5, random_state=0).to_markdown())
+
+|        | shape    |   price |   carat | cut         | color   | clarity   | vendor          | is_lab   |   log_price |
+|-------:|:---------|--------:|--------:|:------------|:--------|:----------|:----------------|:---------|------------:|
+|   6412 | Round    |     740 |    0.3  | Ideal       | F       | SI1       | Brilliant Earth | False    |     6.60665 |
+|  34866 | Round    |    1110 |    0.4  | Ideal       | F       | SI1       | Brilliant Earth | False    |     7.01212 |
+| 164602 | Round    |    2020 |    1.2  | Super Ideal | J       | VS1       | Brilliant Earth | True     |     7.61085 |
+|  45097 | Marquise |    1220 |    0.5  | Good        | H       | SI1       | Brilliant Earth | False    |     7.10661 |
+| 481003 | Round    |    3720 |    1.04 | Very Good   | F       | I1        | James Allen     | False    |     8.22148 |
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Here is an interactive plot showing carat and log price grouped by vendor and whether or not the diamond is a &amp;ldquo;loose&amp;rdquo; diamond or a lab diamond.
 &lt;br&gt;
 
 
@@ -28,7 +60,274 @@ Plotly.d3.json(&#34;/plotly/diamonds-forever/diamond-carat-price-chart.json&#34;
     Plotly.plot(&#39;\/plotly\/diamonds-forever\/diamond-carat-price-chart.json&#39;, fig.data, fig.layout, {responsive: true});
 });
 &lt;/script&gt;
-&lt;br&gt;</description>
+&lt;br&gt;
+We shouldn&amp;rsquo;t be shocked to find that there is a strong correlation between carat and price. Calculating an R^2 value for the graph above, I found that ~67% of the variation in log price is explained by carat. Its also apparent from the graph classifying a diamond as a &amp;ldquo;lab&amp;rdquo; or &amp;ldquo;loose&amp;rdquo; diamond has a large impact on price.&lt;/p&gt;
+&lt;h1 id=&#34;what-the-hell-are-lab-diamonds-any-way&#34;&gt;What the hell are lab diamonds any way?&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&#34;https://en.wikipedia.org/wiki/Synthetic_diamond#Gemstones&#34;&gt;Lab diamonds&lt;/a&gt; are real diamonds, full stop. In fact&amp;hellip;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;In July 2018, the U.S. Federal Trade Commission approved a substantial revision to its Jewelry Guides, with changes that impose new rules on how the trade can describe diamonds and diamond simulants.[120] The revised guides were substantially contrary to what had been advocated in 2016 by De Beers.[119][121][122] The new guidelines remove the word &amp;ldquo;natural&amp;rdquo; from the definition of &amp;ldquo;diamond&amp;rdquo;, thus including lab-grown diamonds within the scope of the definition of &amp;ldquo;diamond&amp;rdquo;. The revised guide further states that &amp;ldquo;If a marketer uses &amp;lsquo;synthetic&amp;rsquo; to imply that a competitor&amp;rsquo;s lab-grown diamond is not an actual diamond, &amp;hellip; this would be deceptive.&amp;quot;[1][121]&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Lab diamonds that are used as gemstones are produced using CVD (Chemical Vapor Disposition) or HPHT (high-pressure high-temperature) methods and only recently, as of mid 2010s, have begun to penetrate the gemstone market as upstarts such as Brilliant Earth have entered the market. &lt;em&gt;Gem-quality diamonds grown in a lab can be chemically, physically and optically identical to naturally occurring ones.&lt;/em&gt; Also because of awareness that traditional diamond mining has led to human rights abuses, lab grown diamonds are also an ethically sound alternative to &amp;ldquo;loose&amp;rdquo; diamonds.&lt;/p&gt;
+&lt;p&gt;&amp;hellip;anyways&amp;hellip;back to the data.&lt;/p&gt;
+&lt;h1 id=&#34;linear-model&#34;&gt;Linear Model&lt;/h1&gt;
+&lt;p&gt;One obvious way to try to get a sense of what features have the greatest impact on diamond price is to run a simple linear regression using the natural logarithm of price as a dependent variable. Why log transform your dependent variable you might say? The short answer here is that you always want to avoid skewed distribution in the residuals. By using a log transformation, we are reducing skewness in our dependent variable and approximating a normal distribution thus helping to alleviate this risk. An additional benefit of using the natural log to transform our dependent variable is that it makes interpretation of the coefficients relatively straightforward as a coefficient of &lt;code&gt;.15&lt;/code&gt; equates to a percentage increase of &lt;code&gt;(exp(.15) - 1) * 100&lt;/code&gt; in our dependent variable:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;In [10]: (math.exp(.15)-1)*1e2
+Out[10]: 16.183424272828304
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;So in the example above, our &lt;code&gt;.15&lt;/code&gt; coefficient equates to a ~16.2 % increase in our dependent variable. Ohh&amp;hellip;.one more thing&amp;hellip;there are a lot of categorical variables involved in this dataset: color, clarity, cut, etc. In order to better handle for these, I&amp;rsquo;ve done one-hot encoding to turn these into dummy variables. Also, because we know that some of these categorical dummmies are perfectly correlated with each other, if a diamond is color E it cant also be color F, I&amp;rsquo;ve removed the following columns &lt;code&gt;[&#39;Fair&#39;, &#39;K&#39;, &#39;I1&#39; , &#39;Blue Nile&#39;,&#39;Emerald&#39;, &#39;price&#39;]&lt;/code&gt; from the datatset and added a constant term. Because we&amp;rsquo;ve removed the above dummmies, the constant in the regression results below captures the variance for a Fair cut, K colored, I1 clarity, Blue Nile emerald shaped diamond.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;                            OLS Regression Results                            
+==============================================================================
+Dep. Variable:              log_price   R-squared:                       0.831
+Model:                            OLS   Adj. R-squared:                  0.831
+Method:                 Least Squares   F-statistic:                 7.073e+04
+Date:                Thu, 18 Feb 2021   Prob (F-statistic):               0.00
+Time:                        07:08:13   Log-Likelihood:            -2.6180e+05
+No. Observations:              461453   AIC:                         5.237e+05
+Df Residuals:                  461420   BIC:                         5.240e+05
+Df Model:                          32                                         
+Covariance Type:            nonrobust                                         
+===================================================================================
+                      coef    std err          t      P&amp;gt;|t|      [0.025      0.975]
+-----------------------------------------------------------------------------------
+const               5.1746      0.020    254.261      0.000       5.135       5.214
+carat               1.6968      0.001   1440.295      0.000       1.695       1.699
+is_lab             -0.8574      0.002   -426.629      0.000      -0.861      -0.853
+Asscher             0.0757      0.014      5.434      0.000       0.048       0.103
+Cushion             0.0953      0.007     13.902      0.000       0.082       0.109
+Heart               0.1861      0.012     15.468      0.000       0.163       0.210
+Marquise            0.1919      0.010     19.611      0.000       0.173       0.211
+Oval                0.1430      0.005     27.629      0.000       0.133       0.153
+Pear                0.1833      0.006     31.382      0.000       0.172       0.195
+Princess            0.0126      0.006      1.963      0.050    1.96e-05       0.025
+Radiant             0.1020      0.010     10.026      0.000       0.082       0.122
+Round               0.3312      0.005     72.221      0.000       0.322       0.340
+Good               -0.1162      0.019     -6.085      0.000      -0.154      -0.079
+Ideal              -0.0382      0.019     -2.034      0.042      -0.075      -0.001
+Super Ideal         0.0138      0.019      0.736      0.462      -0.023       0.051
+Very Good          -0.0806      0.019     -4.294      0.000      -0.117      -0.044
+D                   0.6399      0.004    169.315      0.000       0.633       0.647
+E                   0.5830      0.004    155.457      0.000       0.576       0.590
+F                   0.5768      0.004    152.106      0.000       0.569       0.584
+G                   0.5837      0.004    153.388      0.000       0.576       0.591
+H                   0.5223      0.004    133.833      0.000       0.515       0.530
+I                   0.3714      0.004     93.614      0.000       0.364       0.379
+J                   0.2290      0.004     56.110      0.000       0.221       0.237
+FL                  1.2461      0.013     98.989      0.000       1.221       1.271
+IF                  0.7010      0.006    117.193      0.000       0.689       0.713
+SI1                 0.3500      0.005     68.721      0.000       0.340       0.360
+SI2                 0.2123      0.005     41.181      0.000       0.202       0.222
+VS1                 0.5520      0.005    107.610      0.000       0.542       0.562
+VS2                 0.4984      0.005     97.522      0.000       0.488       0.508
+VVS1                0.6177      0.005    113.775      0.000       0.607       0.628
+VVS2                0.5905      0.005    113.016      0.000       0.580       0.601
+Brilliant Earth     0.0235      0.003      8.412      0.000       0.018       0.029
+James Allen        -0.0112      0.002     -4.605      0.000      -0.016      -0.006
+==============================================================================
+Omnibus:                    95161.361   Durbin-Watson:                   2.003
+Prob(Omnibus):                  0.000   Jarque-Bera (JB):           312020.298
+Skew:                          -1.044   Prob(JB):                         0.00
+Kurtosis:                       6.445   Cond. No.                         130.
+==============================================================================
+
+Notes:
+[1] Standard Errors assume that the covariance matrix of the errors is correctly specified.
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Just for kicks, below is a chart showing our predicted values on the y-axis compared to our actual values on the x-axis using a portion of the diamonds data set that I&amp;rsquo;ve withheld from the linear model above to test its accuracy.&lt;/p&gt;
+&lt;br&gt;
+
+
+&lt;div id=&#34;/plotly/diamonds-forever/lm-prediction-chart.json&#34; class=&#34;plotly&#34; style=&#34;height:400px&#34;&gt;&lt;/div&gt;
+&lt;script&gt;
+Plotly.d3.json(&#34;/plotly/diamonds-forever/lm-prediction-chart.json&#34;, function(err, fig) {
+    Plotly.plot(&#39;\/plotly\/diamonds-forever\/lm-prediction-chart.json&#39;, fig.data, fig.layout, {responsive: true});
+});
+&lt;/script&gt;
+&lt;br&gt;
+&lt;p&gt;It&amp;rsquo;s a pretty good fit.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;## calc mse
+mse = sum((graph_df.actual_price - graph_df.predicted_price)**2)/graph_df.shape[0]
+r = scipy.stats.pearsonr(graph_df.actual_price, graph_df.predicted_price)
+​
+print(mse, r[0]**2)
+0.17309662581335333 0.8389552879111449
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;But looking closely at the chart we can see places where the predictions have larger residuals. Additionally, we see a bit of a pattern where the linear model over predicts on higher and lower prices and somewhat systematically under predicts on prices more towards the middle of the range. Still, we&amp;rsquo;re making fairly accurate predictions.&lt;/p&gt;
+&lt;h1 id=&#34;hey-im-just-a-bloke-trying-to-buy-a-diamond-ring&#34;&gt;Hey! I&amp;rsquo;m just a bloke trying to buy a diamond ring!&lt;/h1&gt;
+&lt;p&gt;One motivation for doing all of this work and putting all of this together is to help people make more informed decisions when they are shopping online for engagement rings. Below is a quickly thrown together table where I&amp;rsquo;ve converted the coefficients from the linear model above into percentage changes, titled &amp;ldquo;p_delta&amp;rdquo;, using the formula I&amp;rsquo;ve described earlier. This makes it easier to draw insights from our model as the &amp;ldquo;p_delta&amp;rdquo; equates to the percentage change in diamond price we estimate from the model due to a 1 unit change in our independent variable. For example, the linear model estimates between a 444%-446% increase in diamond price for a 1 unit change in diamond carat.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;|                 |   coefficients |     p_delta |   p_delta_low |   p_delta_high |
+|:----------------|---------------:|------------:|--------------:|---------------:|
+| const           |      5.17457   | 175.721     |  168.81       |   182.912      |
+| carat           |      1.69683   |   4.45664   |    4.44405    |     4.46925    |
+| is_lab          |     -0.857427  |  -0.575748  |   -0.577416   |    -0.574073   |
+| Asscher         |      0.0756715 |   0.0786082 |    0.0495655  |     0.108455   |
+| Cushion         |      0.095304  |   0.0999932 |    0.0853125  |     0.114872   |
+| Heart           |      0.186117  |   0.204563  |    0.176488   |     0.233308   |
+| Marquise        |      0.191853  |   0.211492  |    0.188484   |     0.234946   |
+| Oval            |      0.143012  |   0.153743  |    0.142098   |     0.165508   |
+| Pear            |      0.183312  |   0.201189  |    0.187516   |     0.21502    |
+| Princess        |      0.0126225 |   0.0127025 |    1.9579e-05 |     0.0255463  |
+| Radiant         |      0.101967  |   0.107347  |    0.0854912  |     0.129643   |
+| Round           |      0.331151  |   0.392569  |    0.380111   |     0.405141   |
+| Good            |     -0.116172  |  -0.109677  |   -0.142379   |    -0.0757294  |
+| Ideal           |     -0.0382252 |  -0.0375039 |   -0.0723039  |    -0.00139838 |
+| Super Ideal     |      0.0138274 |   0.0139235 |   -0.0227301  |     0.0519517  |
+| Very Good       |     -0.0806462 |  -0.07748   |   -0.110818   |    -0.0428921  |
+| D               |      0.639936  |   0.89636   |    0.882364   |     0.91046    |
+| E               |      0.582988  |   0.791384  |    0.778265   |     0.804599   |
+| F               |      0.57684   |   0.780404  |    0.767219   |     0.793686   |
+| G               |      0.58371   |   0.792677  |    0.779356   |     0.806098   |
+| H               |      0.522322  |   0.685938  |    0.673091   |     0.698884   |
+| I               |      0.371373  |   0.449724  |    0.438495   |     0.46104    |
+| J               |      0.229027  |   0.257376  |    0.247357   |     0.267475   |
+| FL              |      1.24614   |   2.47691   |    2.39217    |     2.56376    |
+| IF              |      0.700981  |   1.01573   |    0.992236   |     1.0395     |
+| SI1             |      0.350047  |   0.419135  |    0.405037   |     0.433374   |
+| SI2             |      0.212314  |   0.236536  |    0.224104   |     0.249095   |
+| VS1             |      0.552021  |   0.736759  |    0.719385   |     0.754309   |
+| VS2             |      0.498421  |   0.646119  |    0.629712   |     0.662692   |
+| VVS1            |      0.617705  |   0.854667  |    0.835036   |     0.874508   |
+| VVS2            |      0.590518  |   0.804923  |    0.786533   |     0.823502   |
+| Brilliant Earth |      0.0235072 |   0.0237857 |    0.0181934  |     0.0294087  |
+| James Allen     |     -0.0112318 |  -0.0111689 |   -0.0158852  |    -0.00643009 |
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;At this point, I want to state a few personal, loosely formed theories on diamond prices. First, I believe that diamonds are competitively priced and prices aren&amp;rsquo;t likely to deviate greatly from one jeweler to another (at least this appears true online). Second, features that contribute to a diamonds price are fundamentally linked human beliefs of beauty and scarcity. I think the second theory is the most important for the average diamond shopper as he or she is likely to be more concerned with beauty rather than scarcity. Now, let&amp;rsquo;s dig into the 4 Cs. Of the three websites I went through, I found Brilliant Earth&amp;rsquo;s diamond education to be the best and I will include some links in the below sections.&lt;/p&gt;
+&lt;h2 id=&#34;carat&#34;&gt;Carat&lt;/h2&gt;
+&lt;p&gt;Ok first things first, &lt;a href=&#34;https://www.brilliantearth.com/diamond-carat-ranges/&#34;&gt;carat&lt;/a&gt; is not a measure of the size of a diamond but the weight. One carat is equal to 0.2 grams and the name carat and the weight measurement comes from the carob seed which was considered fairly uniform in weight and used as a counterbalance by early gem traders.&lt;/p&gt;
+&lt;p&gt;In my personal opinion and as evidenced by impact on price, diamond carat is the most important of all of the 4 Cs. The size of the diamond enhances other features that are more exclusively focused on beauty like cut. A bigger diamond lets in more light and therefore has more sparkle or &amp;ldquo;fire&amp;rdquo;. To give a sense of diamond &amp;ldquo;size&amp;rdquo;, the chart below plots what I am calling &amp;ldquo;horizontal area&amp;rdquo; in mm^2 relative to carat weight. For reference, a US dime a diameter of 17.91 mm and a 2.7-2.8 carat round diamond has a diameter of ~1/2 that of a dime.&lt;/p&gt;
+&lt;br&gt;
+
+
+&lt;div id=&#34;/plotly/diamonds-forever/be-size-vs-carat.json&#34; class=&#34;plotly&#34; style=&#34;height:400px&#34;&gt;&lt;/div&gt;
+&lt;script&gt;
+Plotly.d3.json(&#34;/plotly/diamonds-forever/be-size-vs-carat.json&#34;, function(err, fig) {
+    Plotly.plot(&#39;\/plotly\/diamonds-forever\/be-size-vs-carat.json&#39;, fig.data, fig.layout, {responsive: true});
+});
+&lt;/script&gt;
+&lt;br&gt;
+&lt;p&gt;Lastly, here is an interesting tidbit from the Brilliant Earth diamond education section that lends some credence to our linear model:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Diamond prices actually rise exponentially with carat weight rather than linearly. For example, a 1.00 ct. diamond of a given quality is always valued higher than two 0.50 ct. diamonds of the same quality. In fact, a general rule of thumb is that a diamond of double the weight costs around four times more.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;cut&#34;&gt;Cut&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.brilliantearth.com/diamond-cuts/&#34;&gt;Cut&lt;/a&gt; doesn&amp;rsquo;t refer to shape but instead to proportion. While it is entirely possible that my mapping of categories of cut across websites the three websites is inaccurate, cut seems to have little impact on price even when looking at solely one website.&lt;/p&gt;
+&lt;br&gt;
+
+
+&lt;div id=&#34;/plotly/diamonds-forever/be-cut-carat.json&#34; class=&#34;plotly&#34; style=&#34;height:400px&#34;&gt;&lt;/div&gt;
+&lt;script&gt;
+Plotly.d3.json(&#34;/plotly/diamonds-forever/be-cut-carat.json&#34;, function(err, fig) {
+    Plotly.plot(&#39;\/plotly\/diamonds-forever\/be-cut-carat.json&#39;, fig.data, fig.layout, {responsive: true});
+});
+&lt;/script&gt;
+&lt;br&gt;
+&lt;p&gt;In the chart above, Brilliant Earth uses the following categorization to refer to cut quality from lowest to highest quality: &lt;code&gt;[&#39;Fair&#39;, &#39;Good&#39;, &#39;Very Good&#39;, &#39;Ideal&#39;, &#39;Super Ideal&#39;]&lt;/code&gt;. All of this is evidence to say that cut feels like a feature where it isn&amp;rsquo;t necessary to focus on having the &amp;ldquo;best&amp;rdquo; possible, nor does it really impact the price much.&lt;/p&gt;
+&lt;h2 id=&#34;color&#34;&gt;Color&lt;/h2&gt;
+&lt;br&gt;
+
+
+&lt;div id=&#34;/plotly/diamonds-forever/be-color-carat.json&#34; class=&#34;plotly&#34; style=&#34;height:400px&#34;&gt;&lt;/div&gt;
+&lt;script&gt;
+Plotly.d3.json(&#34;/plotly/diamonds-forever/be-color-carat.json&#34;, function(err, fig) {
+    Plotly.plot(&#39;\/plotly\/diamonds-forever\/be-color-carat.json&#39;, fig.data, fig.layout, {responsive: true});
+});
+&lt;/script&gt;
+&lt;br&gt;
+&lt;p&gt;&lt;a href=&#34;https://www.brilliantearth.com/diamond-color/&#34;&gt;Color&lt;/a&gt; actually does appear to have a meaningful impact on price.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;|    |   coefficients |   p_delta |   p_delta_low |   p_delta_high |
+|:---|---------------:|----------:|--------------:|---------------:|
+| D  |       0.639936 |  0.89636  |      0.882364 |       0.91046  |
+| E  |       0.582988 |  0.791384 |      0.778265 |       0.804599 |
+| F  |       0.57684  |  0.780404 |      0.767219 |       0.793686 |
+| G  |       0.58371  |  0.792677 |      0.779356 |       0.806098 |
+| H  |       0.522322 |  0.685938 |      0.673091 |       0.698884 |
+| I  |       0.371373 |  0.449724 |      0.438495 |       0.46104  |
+| J  |       0.229027 |  0.257376 |      0.247357 |       0.267475 |
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;My opinion here is that unlike cut or clarity for most gemstone quality diamonds, color is actually a feature that is discernable by the naked eye and the biggest jump in price looks to be upgrading from an &lt;code&gt;I&lt;/code&gt; color to a &lt;code&gt;H&lt;/code&gt; color. This would make intuitive sense as looking at diamond color grading scales we see the following for &lt;code&gt;H&lt;/code&gt; and &lt;code&gt;I&lt;/code&gt; colored diamond color descriptions.&lt;/p&gt;
+&lt;p&gt;^H:	Near-colorless. Color noticeable when compared to diamonds of better grades, but offers excellent value.&lt;/p&gt;
+&lt;p&gt;^I: Near-colorless. Slightly detected color—a good value.&lt;/p&gt;
+&lt;p&gt;Going from an &lt;code&gt;I&lt;/code&gt; colored diamond to the highest possible quality of color, &lt;code&gt;D&lt;/code&gt;, represents a ~72 % increase in price while going from an &lt;code&gt;I&lt;/code&gt; to an &lt;code&gt;H&lt;/code&gt; is a ~40% increase in price.&lt;/p&gt;
+&lt;h2 id=&#34;clarity&#34;&gt;Clarity&lt;/h2&gt;
+&lt;br&gt;
+
+
+&lt;div id=&#34;/plotly/diamonds-forever/be-clarity-carat.json&#34; class=&#34;plotly&#34; style=&#34;height:400px&#34;&gt;&lt;/div&gt;
+&lt;script&gt;
+Plotly.d3.json(&#34;/plotly/diamonds-forever/be-clarity-carat.json&#34;, function(err, fig) {
+    Plotly.plot(&#39;\/plotly\/diamonds-forever\/be-clarity-carat.json&#39;, fig.data, fig.layout, {responsive: true});
+});
+&lt;/script&gt;
+&lt;br&gt;
+&lt;p&gt;Next to carat and color, &lt;a href=&#34;https://www.brilliantearth.com/diamond-clarity/&#34;&gt;clarity&lt;/a&gt; appears to be the next most impactful of the 4 Cs in terms of price.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;|      |   coefficients |   p_delta |   p_delta_low |   p_delta_high |
+|:-----|---------------:|----------:|--------------:|---------------:|
+| SI2  |       0.212314 |  0.236536 |      0.224104 |       0.249095 |
+| SI1  |       0.350047 |  0.419135 |      0.405037 |       0.433374 |
+| VS2  |       0.498421 |  0.646119 |      0.629712 |       0.662692 |
+| VS1  |       0.552021 |  0.736759 |      0.719385 |       0.754309 |
+| VVS2 |       0.590518 |  0.804923 |      0.786533 |       0.823502 |
+| VVS1 |       0.617705 |  0.854667 |      0.835036 |       0.874508 |
+| IF   |       0.700981 |  1.01573  |      0.992236 |       1.0395   |
+| FL   |       1.24614  |  2.47691  |      2.39217  |       2.56376  |
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Flawless diamonds are exceedingly rare and a hefty premium is charged for them. Below the &amp;ldquo;flawless&amp;rdquo; categorization, there appear to be fairly regular price differences in each step of the clarity quality ladder. While I can&amp;rsquo;t truly back this claim up with data, I can say that in conversations with friends and also from my diamond shopping experience, it did not appear to me that clarity was actually that important to the beauty of the diamond above the SI1 and S12 classifications. Above this breakpoint, inclusions can only really be seen in 10x magnification and would not be discernable by the naked eye. Going back to my loosely held beliefs about diamond prices, I think that clarity contributes to a diamonds price more due to its effect on perceptions of rarity rather than objective beauty.&lt;/p&gt;
+&lt;h1 id=&#34;xgb-model&#34;&gt;XGB Model&lt;/h1&gt;
+&lt;p&gt;One of the benefits of always using a linear model as a starting point for an analysis like this is that it provides easy explainability of the coefficients and their respective impacts on the model&amp;rsquo;s predictions. As models get more and more complex, understanding what is going on inside of the &amp;ldquo;black box&amp;rdquo; becomes increasingly challenging. This is a pretty common trade-off people talk about in machine learning and its normally referenced as the &amp;ldquo;accuracy vs explainability&amp;rdquo; problem.&lt;/p&gt;
+&lt;p&gt;One of the best open source projects that I have come across lately is aimed squarely at addressing this issue. &lt;a href=&#34;https://github.com/slundberg/shap&#34;&gt;Shap&lt;/a&gt; is a game theoretic approach that attempts to explain any and every model using Shapley values. I will spare everyone the math involved but if you&amp;rsquo;re interested you can find out more by reading this &lt;a href=&#34;https://towardsdatascience.com/interpretable-machine-learning-with-xgboost-9ec80d148d27&#34;&gt;medium post&lt;/a&gt; written by Shap&amp;rsquo;s creator, Scott Lundberg, and also in this &lt;a href=&#34;https://proceedings.neurips.cc/paper/2017/hash/8a20a8621978632d76c43dfd28b67767-Abstract.html&#34;&gt;academic paper&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Using Shap, let&amp;rsquo;s see if we can make a better predictive model using XGBoost that will reveal some of the interactions between the features we in our diamond&amp;rsquo;s data set that to put it simply, our linear model above was too simple to learn.&lt;/p&gt;
+&lt;p&gt;The chart below shows predicted vs actual values of a test split for our diamonds data set where the predictions where made by a XGBoost Regression model that I trained on a training set comprised of 80% of our diamond data with the following parameters:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;xg_reg = xgb.XGBRegressor(
+    objective =&#39;reg:squarederror&#39;, 
+    colsample_bytree = 0.3, 
+    learning_rate = 0.1,
+    max_depth = 4, 
+    alpha = 10, 
+    n_estimators = 500
+)
+&lt;/code&gt;&lt;/pre&gt;&lt;br&gt;
+
+
+&lt;div id=&#34;/plotly/diamonds-forever/xgb-prediction-chart.json&#34; class=&#34;plotly&#34; style=&#34;height:400px&#34;&gt;&lt;/div&gt;
+&lt;script&gt;
+Plotly.d3.json(&#34;/plotly/diamonds-forever/xgb-prediction-chart.json&#34;, function(err, fig) {
+    Plotly.plot(&#39;\/plotly\/diamonds-forever\/xgb-prediction-chart.json&#39;, fig.data, fig.layout, {responsive: true});
+});
+&lt;/script&gt;
+&lt;br&gt;
+&lt;p&gt;Ok. So its obvious, that our XGB model is great at predicting diamond prices. The chart above has a calculated R^2 of 98.9 and an MSE of 0.011, which doesn&amp;rsquo;t mean anything until you go back and compare this to the MSE of the linear model 0.17. This is great but this post is about saying something intelligent about diamond prices so what does the XGB model tell us?&lt;/p&gt;
+&lt;h2 id=&#34;shap-values&#34;&gt;Shap values&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;/img/diamonds-forever/xgb-feature-importance.png&#34; alt=&#34;xgb-features&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The chart above shows us the model&amp;rsquo;s calculated Shapley values for each feature and is meant to demonstrate feature importance. Before diving in more, one important aspect of understanding Shap is that Shapley values are derived in an additive nature. This means that a feature&amp;rsquo;s Shap value is calculated by comparing the predicted output to the score of the model prior to adding that feature. In a multivariate model all of our Shap values are additive on top of a baseline and this baseline is easiest to think of as the average value of the predicted dependent variable in our training dataset.&lt;/p&gt;
+&lt;p&gt;It shouldn&amp;rsquo;t be surprising to see that carat and whether or not a diamond is a lab diamond appear to be the two most important features to diamond price. Although it is interesting to see how much the model believes that K color and I1 inclusions contribute negatively to overall price.&lt;/p&gt;
+&lt;p&gt;To help understand Shap values a little better, let&amp;rsquo;s look at some individual examples. Below is a randomly selected diamond and a  shap visualization of the models predicted score.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;|                 |   131099 |
+|:----------------|---------:|
+| carat           |     0.62 |
+| is_lab          |     1    |
+| Emerald         |     1    |
+| Super Ideal     |     1    |
+| H               |     1    |
+| VS1             |     1    |
+| Brilliant Earth |     1    |
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;img src=&#34;/img/diamonds-forever/shap-emerald-diamond.png&#34; alt=&#34;shap-emerald-diamond&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The baseline value that the model uses as a starting point is 7.694 representing the average of the natural log of the model&amp;rsquo;s predicted diamond price for the training data set. The Shapley values show each feature&amp;rsquo;s importance in the resulting predicted score for the diamond of 6.51. &lt;code&gt;is_lab&lt;/code&gt;, &lt;code&gt;carat&lt;/code&gt;, and the fact that the diamond is not a round cut but instead an emerald all contribute negatively to the predicted price relative to the base score. Interestingly, &lt;code&gt;carat&lt;/code&gt; also contributes negatively to the base score but this is because our carat measurement of 0.62 is below the mean carat measurement for diamonds in our training set.&lt;/p&gt;
+&lt;h2 id=&#34;shap-is-cool-and-all-but-why-do-this&#34;&gt;Shap is cool and all but why do this?&lt;/h2&gt;
+&lt;p&gt;I had a couple of reasons why I wanted to build an XGBoost regression model and use Shap for interpretation beyond wanting very accurate predictions of diamond prices. Namely:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;I wasn&amp;rsquo;t convinced that assuming a linear relationship between diamond prices and our feature set was accurate&lt;/li&gt;
+&lt;li&gt;I was fairly confident that there is &amp;ldquo;some&amp;rdquo; correlation between independent variables. For example, clarity might have a larger impact on price the larger a diamonds carat becomes. This intuitively makes sense but leads to problems with the coefficients of my linear model.&lt;/li&gt;
+&lt;li&gt;An XGB model can help to find non-linearity and correlations between independent variables and Shap can be used to help to explain these phenomena.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The &lt;code&gt;shap&lt;/code&gt; python package has a nifty method called &lt;code&gt;dependence_plot&lt;/code&gt; that allows us to plot interactions between multiple independent variables and see the resulting changes in predicted Shap values. It also allows us through use of another method
+called &lt;code&gt;shap_interaction_values&lt;/code&gt; to see the higher-order interaction effects between different independent variables and how these higher-order effects impacted predicted Shap values.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/img/diamonds-forever/shap-values-carat-is_lab.png&#34; alt=&#34;shap-values-carat-is_lab&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The plot above shows us Shap values for &lt;code&gt;carat&lt;/code&gt; colored by whether or not a diamond is a lab diamond. Just looking at the graph, we can see that there is some small dispersion of predicted shap values for carat size based on whether or not the diamond is a lab diamond.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/img/diamonds-forever/shap-interaction-values-carat-is_lab.png&#34; alt=&#34;shap-interaction-values-carat-is_lab&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Plotting the interaction effects, we can see that the higher order impact of &lt;code&gt;is_lab&lt;/code&gt; on &lt;code&gt;carat&lt;/code&gt; is largest for &lt;code&gt;carat&lt;/code&gt; values mid-way between 1 and 2. And at the minimum and maximum points of this chart, &lt;code&gt;[-.15, .15]&lt;/code&gt;, the interaction effects between &lt;code&gt;carat&lt;/code&gt; and &lt;code&gt;is_lab&lt;/code&gt; influence the predicted price of our diamond by roughly -14% to +16%.&lt;/p&gt;
+&lt;p&gt;Having looked at many of these interaction effects, I can tell you that there aren&amp;rsquo;t huge high-order effects in the XGB model. Thinking more about this, this feels that it makes intuitive sense given how well the linear model already performed in predicting diamond prices. All of this being said, some of the most interesting interaction effects for price conscious, prospective diamond buyers are going to be those related to the website selling the diamonds and diamond carat.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/img/diamonds-forever/shap-interaction-values-brilliant-earth-carat.png&#34; alt=&#34;shap-interaction-values-brilliant-earth-carat&#34;&gt;
+&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/img/diamonds-forever/shap-interaction-values-blue-nile-carat.png&#34; alt=&#34;shap-interaction-values-blue-nile-carat&#34;&gt;
+&lt;br&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/img/diamonds-forever/shap-interaction-values-james-allen-carat.png&#34; alt=&#34;shap-interaction-values-james-allen-carat&#34;&gt;&lt;/p&gt;
+&lt;p&gt;There aren&amp;rsquo;t any noticeable trends to higher order effects for James Allen diamonds. However, we can see clear trends for Blue Nile and Brilliant Earth diamonds with Brilliant Earth being slightly less expensive for diamonds greater than 1 carat and Blue Nile being less expensive for diamonds below 1 carat.&lt;/p&gt;
+&lt;h1 id=&#34;conclusion&#34;&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;I know that for me personally, buying a diamond engagement ring was a nerve racking experience. My goal for this post was to give people a better sense of how diamonds are priced and what you might be getting for your money. I also hope that it was at least somewhat interesting. I wish you good fortune in your search and hope that I helped some way in some small bit.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -54,14 +353,14 @@ Plotly.d3.json(&#34;/plotly/diamonds-forever/diamond-carat-price-chart.json&#34;
       <pubDate>Mon, 21 Dec 2020 14:10:46 +0000</pubDate>
       
       <guid>/posts/hedonometer/</guid>
-      <description>&lt;h2 id=&#34;background&#34;&gt;Background&lt;/h2&gt;
+      <description>&lt;h1 id=&#34;background&#34;&gt;Background&lt;/h1&gt;
 &lt;p&gt;About two months ago, I was introduced to a work of the University of Vermont Computational Story Lab called the Hedonometer. At its core, the Hedonometer is a large scale NLP application based on Twitter data and is used to measure &amp;ldquo;happiness&amp;rdquo; at scale. The creators do a great job summarizing this here:&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;strong&gt;“What is being measured by the instrument?”&lt;/strong&gt; &lt;br&gt;&lt;br&gt;
 hedonometer.org currently measures Twitter’s Decahose API feed (formerly Gardenhose). The stream reflects a 10% random sampling of the roughly  500 million messages posted to the service daily, comprising roughly 100GB of raw JSON each day. Words in messages we determine to be written  in English are thrown into a large bag containing roughly 200 million words per day. This bag is then assigned a happiness score based on the  average happiness score of the words contained within. While &amp;ldquo;bag-of-words&amp;rdquo; approaches can be problematic for small collections of text, we  have found the methodology to work well at the large scale.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;My introduction to the Hedonometer came via Gimlet Media&amp;rsquo;s Replay All podcast. I was always going to find a quantitative measure of global happiness interesting but what struck me most as I listened to the show&amp;rsquo;s hosts talk to the creators of the Hedonometer was that this seemed like a cool project for me to try to recreate on my own. So &amp;hellip; that is exactly what I did and below is a brief write-up of my attempt.&lt;/p&gt;
-&lt;h2 id=&#34;sleuthing-around&#34;&gt;Sleuthing Around&lt;/h2&gt;
+&lt;h1 id=&#34;sleuthing-around&#34;&gt;Sleuthing Around&lt;/h1&gt;
 &lt;p&gt;At first, I spent multiple hours messing around with Twitter&amp;rsquo;s API and open source NLP lexicon python packages (a colleague recommend vaderSentiment). What I quickly realized was the following:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;It is not easy to get large quantities of historical data from Twitter&lt;/li&gt;
@@ -69,7 +368,7 @@ hedonometer.org currently measures Twitter’s Decahose API feed (formerly Garde
 &lt;li&gt;(and this is embarrassing to admit because it took me multiple days to realize) hedonometer.org makes their lexicon scoring available via an api.&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;The general idea employed by both the creators of the Hedonometer and Vader Sentiment is pretty similar. Crowdsource a bunch of people to rank words/emoticon on AWS Mechanical Turk and employ a rules based system to adjust total scores. Vader&amp;rsquo;s rules set and lexicon are both fairly complex and involved, possibly suggestive of why Vader seems to perform better in my opinion (more on this later). Meanwhile, the Hedonometer seems to use a pretty simple adjustment to remove &amp;ldquo;neutral&amp;rdquo; words, words with scores between 4-6 on a 1-9 point scale.&lt;/p&gt;
-&lt;h2 id=&#34;trump-twitter&#34;&gt;Trump Twitter&lt;/h2&gt;
+&lt;h1 id=&#34;trump-twitter&#34;&gt;Trump Twitter&lt;/h1&gt;
 &lt;p&gt;Why not start a twitter based sentiment analysis project with @realDonaldTrump? As I&amp;rsquo;ve mentioned earlier, it is difficult to come by large volumes of historical tweets and I needed a baseline to compare my &amp;ldquo;simple&amp;rdquo; hedonometer to vaderSentiment. Luckily for me, Harvard&amp;rsquo;s dataverse has a publicly available Donald Trump Twitter dataset comprising @realDonaldTrump tweets from May 2009 to November 2019: &lt;a href=&#34;https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/KJEBIL&#34;&gt;source&lt;/a&gt;.&lt;/p&gt;
 &lt;br&gt;
 
@@ -137,7 +436,7 @@ Plotly.d3.json(&#34;/plotly/hedonometer/djt-tweets-by-hour.json&#34;, function(e
 &lt;/script&gt;
 &lt;br&gt;
 I am sure this has been said before and I am stealing this idea from a smarter person&amp;rsquo;s article I&amp;rsquo;ve read elsewhere (if you have the link please send my way). The graph above removes retweets and shows @realDonaldTrump tweet sentiment (normalized vaderSentiment and hedonometer scores) by the hour of day EST time the tweets were sent. In the first 3 years of his Presidency, Donald Trump did the majority of his tweeting between 6 and 10 am EST time and these hours also tended to be when he sent his most negative and unhappy tweets. Looking at the 2020 time series for English speaking twitter on hedonomter.org, a single std dev. move in hedonometer scores is roughly ~0.07 points. From Election Day 2020 (11/3/2020) to the news channels announcements of Joe Biden as the next President of the United States (11/7/2020), English speaking twitter&amp;rsquo;s average happiness dipped and recovered a roughly 1.5 std dev move. The day before Thanksgiving day to Thanksgiving day 2020 was roughly equal to a single standard deviation. I feel these two facts give interesting context to the notion that based on his tweets, Donald Trump&amp;rsquo;s happiness appears to fluctuate by a &amp;ldquo;Thanksgiving Day&amp;rdquo; from 6 AM to 2 PM. I wonder how much happier I would be if he stayed of twitter until after he finished a morning round of golf.&lt;/p&gt;
-&lt;h2 id=&#34;the-new-york-times&#34;&gt;The New York Times&lt;/h2&gt;
+&lt;h1 id=&#34;the-new-york-times&#34;&gt;The New York Times&lt;/h1&gt;
 &lt;p&gt;One of the more interesting applications I could think of for my hedonometer was to do an analysis of the news media. As it turns out, the New York Times has fantastic, public APIs specifically the &lt;code&gt;archive&lt;/code&gt; endpoint.&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;The Archive API returns an array of NYT articles for a given month, going back to 1851. Its response fields are the same as the Article Search API. The Archive API is very useful if you want to build your own database of NYT article metadata. You simply pass the API the year and month and it returns a JSON object with all articles for that month. The response size can be large (~20mb).&lt;/p&gt;
@@ -193,7 +492,7 @@ Syracuse defeats Seton Hall, 63 to 62, in college basketball; photos (M)&lt;/p&g
 &lt;p&gt;How Colleges Became the New Covid Hot Spots
 Like meatpacking plants and nursing homes early in the pandemic, campuses across the country are experiencing outbreaks.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id=&#34;the-new-york-times-and-twitter&#34;&gt;The New York Times and Twitter&lt;/h2&gt;
+&lt;h1 id=&#34;the-new-york-times-and-twitter&#34;&gt;The New York Times and Twitter&lt;/h1&gt;
 &lt;p&gt;
 
 &lt;div id=&#34;/plotly/hedonometer/nyt-twitter-rolling-avg.json&#34; class=&#34;plotly&#34; style=&#34;height:400px&#34;&gt;&lt;/div&gt;
@@ -204,7 +503,7 @@ Plotly.d3.json(&#34;/plotly/hedonometer/nyt-twitter-rolling-avg.json&#34;, funct
 &lt;/script&gt;
 &lt;br&gt;
 Lastly, I wanted to compare hedonometer scores for Twitter from hedonometer.org directly to the scores I was calculating for New York Times front page headlines and abstracts. The chart above shows rolling 30 day averages for all three. Up until 2020, there isn&amp;rsquo;t really any evidence of strong correlation between Twitter and the front page of the New York Times, but we can see how in 2020 both time series experience 2 large negative dips, first around the emergence of the Coronavirus and second around the protests against police brutality that occurred over the summer. I&amp;rsquo;m not surprised to find that in general Twitter appears to be a happier place than the front page of the New York Times, but I was surprised to see how consistently the New York Times front page is much, much unhappier. As someone who is addicted to constantly refreshing the NYT app on my iPhone this summer perhaps I should consider spending a bit more time on Twitter instead.&lt;/p&gt;
-&lt;h2 id=&#34;notes&#34;&gt;Notes&lt;/h2&gt;
+&lt;h1 id=&#34;notes&#34;&gt;Notes&lt;/h1&gt;
 &lt;p&gt;I hope you found this post enjoyable. All of the code behind this analysis is publicly available on github for those who are curious.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
