@@ -22,7 +22,7 @@ menu:
 
 params:
   author: "David L. Rappeport"
-  description: "Work in Progress"
+  description: "Personal website of me, David L Rappeport, and a place where I hope to keep myself intellectually honest about topics that interest me."
   images:
     - images/og-featured.png # relative path to "static" directory
   custom_css:

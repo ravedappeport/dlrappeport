@@ -1,8 +1,9 @@
 ---
 title: "Diamonds Forever"
-date: 2021-02-17T05:37:13Z
+date: 2021-02-21T18:28:25Z
 draft: false
 plotly: true
+description: "Data driven investigation of diamond pricing on three of the most popular online engagement ring websites"
 ---
 
 Time for a brief personal note. On January 29th 2021, I took the big leap and proposed to my girlfriend, Emma, at L'Auberge Resort in Sedona, Arizona. Thankfully, she said yes and we had an amazing weekend together. This photo below was taken by our photographer minutes after the proposal and captures a moment of pure bliss.
@@ -261,7 +262,7 @@ Flawless diamonds are exceedingly rare and a hefty premium is charged for them. 
 
 # XGB Model
 
-One of the benefits or always using a linear model as a starting point for an analysis like this is that it provides easy explainability of the coefficients and their respective impacts on the models predictions. As models get more and more complex, understanding what is going on inside of the "black box" becomes increasingly challenging. This is a pretty common trade off people talk about in machine learning and its normally referenced as the "accuracy vs explainability" problem.
+One of the benefits of always using a linear model as a starting point for an analysis like this is that it provides easy explainability of the coefficients and their respective impacts on the model's predictions. As models get more and more complex, understanding what is going on inside of the "black box" becomes increasingly challenging. This is a pretty common trade-off people talk about in machine learning and its normally referenced as the "accuracy vs explainability" problem.
 
 One of the best open source projects that I have come across lately is aimed squarely at addressing this issue. [Shap](https://github.com/slundberg/shap) is a game theoretic approach that attempts to explain any and every model using Shapley values. I will spare everyone the math involved but if you're interested you can find out more by reading this [medium post](https://towardsdatascience.com/interpretable-machine-learning-with-xgboost-9ec80d148d27) written by Shap's creator, Scott Lundberg, and also in this [academic paper](https://proceedings.neurips.cc/paper/2017/hash/8a20a8621978632d76c43dfd28b67767-Abstract.html). 
 
@@ -289,6 +290,57 @@ Ok. So its obvious, that our XGB model is great at predicting diamond prices. Th
 ## Shap values
 ![xgb-features](/img/diamonds-forever/xgb-feature-importance.png)
 
-The chart above shows us the models calculated Shapley values for each feature and is meant to demonstrate feature importance. Before diving in more its important aspect of Shap and that is that Shapley values are derived in an additive nature i.e. a features Shap value is calculated by comparing the predicted output to the score of the model prior to adding that feature. This means that in a multivariate model all of our Shap values are additive on top of a baseline and this baseline is easiest to think of as the average value of the predictions in our training dataset. 
+The chart above shows us the model's calculated Shapley values for each feature and is meant to demonstrate feature importance. Before diving in more, one important aspect of understanding Shap is that Shapley values are derived in an additive nature. This means that a feature's Shap value is calculated by comparing the predicted output to the score of the model prior to adding that feature. In a multivariate model all of our Shap values are additive on top of a baseline and this baseline is easiest to think of as the average value of the predicted dependent variable in our training dataset. 
 
-It shouldn't be surprising to see that carat and whether or not a diamond is a lab diamond appear to be the two most important variables to diamond price. Although it is interesting to see how much the model believes that K color and I1 inclusions contribute negatively to overall price. 
+It shouldn't be surprising to see that carat and whether or not a diamond is a lab diamond appear to be the two most important features to diamond price. Although it is interesting to see how much the model believes that K color and I1 inclusions contribute negatively to overall price. 
+
+To help understand Shap values a little better, let's look at some individual examples. Below is a randomly selected diamond and a  shap visualization of the models predicted score.
+
+```
+|                 |   131099 |
+|:----------------|---------:|
+| carat           |     0.62 |
+| is_lab          |     1    |
+| Emerald         |     1    |
+| Super Ideal     |     1    |
+| H               |     1    |
+| VS1             |     1    |
+| Brilliant Earth |     1    |
+``` 
+
+![shap-emerald-diamond](/img/diamonds-forever/shap-emerald-diamond.png)
+
+The baseline value that the model uses as a starting point is 7.694 representing the average of the natural log of the model's predicted diamond price for the training data set. The Shapley values show each feature's importance in the resulting predicted score for the diamond of 6.51. `is_lab`, `carat`, and the fact that the diamond is not a round cut but instead an emerald all contribute negatively to the predicted price relative to the base score. Interestingly, `carat` also contributes negatively to the base score but this is because our carat measurement of 0.62 is below the mean carat measurement for diamonds in our training set. 
+
+## Shap is cool and all but why do this?
+I had a couple of reasons why I wanted to build an XGBoost regression model and use Shap for interpretation beyond wanting very accurate predictions of diamond prices. Namely:
+- I wasn't convinced that assuming a linear relationship between diamond prices and our feature set was accurate
+- I was fairly confident that there is "some" correlation between independent variables. For example, clarity might have a larger impact on price the larger a diamonds carat becomes. This intuitively makes sense but leads to problems with the coefficients of my linear model. 
+- An XGB model can help to find non-linearity and correlations between independent variables and Shap can be used to help to explain these phenomena. 
+
+The `shap` python package has a nifty method called `dependence_plot` that allows us to plot interactions between multiple independent variables and see the resulting changes in predicted Shap values. It also allows us through use of another method 
+called `shap_interaction_values` to see the higher-order interaction effects between different independent variables and how these higher-order effects impacted predicted Shap values.
+
+![shap-values-carat-is_lab](/img/diamonds-forever/shap-values-carat-is_lab.png)
+
+The plot above shows us Shap values for `carat` colored by whether or not a diamond is a lab diamond. Just looking at the graph, we can see that there is some small dispersion of predicted shap values for carat size based on whether or not the diamond is a lab diamond. 
+
+![shap-interaction-values-carat-is_lab](/img/diamonds-forever/shap-interaction-values-carat-is_lab.png)
+
+Plotting the interaction effects, we can see that the higher order impact of `is_lab` on `carat` is largest for `carat` values mid-way between 1 and 2. And at the minimum and maximum points of this chart, `[-.15, .15]`, the interaction effects between `carat` and `is_lab` influence the predicted price of our diamond by roughly -14% to +16%. 
+
+Having looked at many of these interaction effects, I can tell you that there aren't huge high-order effects in the XGB model. Thinking more about this, this feels that it makes intuitive sense given how well the linear model already performed in predicting diamond prices. All of this being said, some of the most interesting interaction effects for price conscious, prospective diamond buyers are going to be those related to the website selling the diamonds and diamond carat.
+
+![shap-interaction-values-brilliant-earth-carat](/img/diamonds-forever/shap-interaction-values-brilliant-earth-carat.png)
+<br>
+
+![shap-interaction-values-blue-nile-carat](/img/diamonds-forever/shap-interaction-values-blue-nile-carat.png)
+<br>
+
+![shap-interaction-values-james-allen-carat](/img/diamonds-forever/shap-interaction-values-james-allen-carat.png)
+
+There aren't any noticeable trends to higher order effects for James Allen diamonds. However, we can see clear trends for Blue Nile and Brilliant Earth diamonds with Brilliant Earth being slightly less expensive for diamonds greater than 1 carat and Blue Nile being less expensive for diamonds below 1 carat.
+
+# Conclusion
+
+I know that for me personally, buying a diamond engagement ring was a nerve racking experience. My goal for this post was to give people a better sense of how diamonds are priced and what you might be getting for your money. I also hope that it was at least somewhat interesting. I wish you good fortune in your search and hope that I helped some way in some small bit. 

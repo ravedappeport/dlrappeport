@@ -3,6 +3,7 @@ title: "Hedonometer"
 date: 2020-12-21T14:10:46Z
 draft: false
 plotly: true
+description: "An attempt to create a simplified version of the University of Vermont's Hedonometer and see what we can do with it"
 ---
 
 # Background
