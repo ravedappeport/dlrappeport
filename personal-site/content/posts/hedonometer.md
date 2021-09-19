@@ -1,12 +1,15 @@
 ---
 title: "Hedonometer"
 date: 2020-12-21T14:10:46Z
+lastmod: 2021-09-19T20:08:33Z
 draft: false
 plotly: true
 description: "An attempt to create a simplified version of the University of Vermont's Hedonometer and see what we can do with it"
+tags: ["trump", "twitter","hedonometer","sentiment analysis"]
+categories: ["data science"]
 ---
 
-# Background
+## Background
 
 About two months ago, I was introduced to a work of the University of Vermont Computational Story Lab called the Hedonometer. At its core, the Hedonometer is a large scale NLP application based on Twitter data and is used to measure "happiness" at scale. The creators do a great job summarizing this here:
 
@@ -15,7 +18,7 @@ About two months ago, I was introduced to a work of the University of Vermont Co
 
 My introduction to the Hedonometer came via Gimlet Media's Replay All podcast. I was always going to find a quantitative measure of global happiness interesting but what struck me most as I listened to the show's hosts talk to the creators of the Hedonometer was that this seemed like a cool project for me to try to recreate on my own. So ... that is exactly what I did and below is a brief write-up of my attempt. 
 
-# Sleuthing Around
+## Sleuthing Around
 
 At first, I spent multiple hours messing around with Twitter's API and open source NLP lexicon python packages (a colleague recommend vaderSentiment). What I quickly realized was the following:
 1. It is not easy to get large quantities of historical data from Twitter
@@ -24,7 +27,7 @@ At first, I spent multiple hours messing around with Twitter's API and open sour
 
 The general idea employed by both the creators of the Hedonometer and Vader Sentiment is pretty similar. Crowdsource a bunch of people to rank words/emoticon on AWS Mechanical Turk and employ a rules based system to adjust total scores. Vader's rules set and lexicon are both fairly complex and involved, possibly suggestive of why Vader seems to perform better in my opinion (more on this later). Meanwhile, the Hedonometer seems to use a pretty simple adjustment to remove "neutral" words, words with scores between 4-6 on a 1-9 point scale.
 
-# Trump Twitter
+## Trump Twitter
 
 Why not start a twitter based sentiment analysis project with @realDonaldTrump? As I've mentioned earlier, it is difficult to come by large volumes of historical tweets and I needed a baseline to compare my "simple" hedonometer to vaderSentiment. Luckily for me, Harvard's dataverse has a publicly available Donald Trump Twitter dataset comprising @realDonaldTrump tweets from May 2009 to November 2019: [source](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/KJEBIL). 
 
@@ -79,7 +82,7 @@ Before moving on though, some more fun with DJT tweets and sentiment analysis.
 <br>
 I am sure this has been said before and I am stealing this idea from a smarter person's article I've read elsewhere (if you have the link please send my way). The graph above removes retweets and shows @realDonaldTrump tweet sentiment (normalized vaderSentiment and hedonometer scores) by the hour of day EST time the tweets were sent. In the first 3 years of his Presidency, Donald Trump did the majority of his tweeting between 6 and 10 am EST time and these hours also tended to be when he sent his most negative and unhappy tweets. Looking at the 2020 time series for English speaking twitter on hedonomter.org, a single std dev. move in hedonometer scores is roughly ~0.07 points. From Election Day 2020 (11/3/2020) to the news channels announcements of Joe Biden as the next President of the United States (11/7/2020), English speaking twitter's average happiness dipped and recovered a roughly 1.5 std dev move. The day before Thanksgiving day to Thanksgiving day 2020 was roughly equal to a single standard deviation. I feel these two facts give interesting context to the notion that based on his tweets, Donald Trump's happiness appears to fluctuate by a "Thanksgiving Day" from 6 AM to 2 PM. I wonder how much happier I would be if he stayed of twitter until after he finished a morning round of golf. 
 
-# The New York Times
+## The New York Times
 
 One of the more interesting applications I could think of for my hedonometer was to do an analysis of the news media. As it turns out, the New York Times has fantastic, public APIs specifically the `archive` endpoint. 
 
@@ -131,12 +134,12 @@ All of that being said, I think its still interesting to just look at a random s
  Like meatpacking plants and nursing homes early in the pandemic, campuses across the country are experiencing outbreaks.
  
 
-# The New York Times and Twitter
+## The New York Times and Twitter
 {{< plotly json="/plotly/hedonometer/nyt-twitter-rolling-avg.json" height="400px" >}}
 <br>
 Lastly, I wanted to compare hedonometer scores for Twitter from hedonometer.org directly to the scores I was calculating for New York Times front page headlines and abstracts. The chart above shows rolling 30 day averages for all three. Up until 2020, there isn't really any evidence of strong correlation between Twitter and the front page of the New York Times, but we can see how in 2020 both time series experience 2 large negative dips, first around the emergence of the Coronavirus and second around the protests against police brutality that occurred over the summer. I'm not surprised to find that in general Twitter appears to be a happier place than the front page of the New York Times, but I was surprised to see how consistently the New York Times front page is much, much unhappier. As someone who is addicted to constantly refreshing the NYT app on my iPhone this summer perhaps I should consider spending a bit more time on Twitter instead.  
 
-# Notes
+## Notes
 
 I hope you found this post enjoyable. All of the code behind this analysis is publicly available on github for those who are curious. 
 

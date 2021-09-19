@@ -1,18 +1,24 @@
 ---
 title: "Diamonds Forever"
 date: 2021-02-21T18:28:25Z
+lastmode: 2021-09-19T20:08:33Z
 draft: false
 plotly: true
 description: "Data driven investigation of diamond pricing on three of the most popular online engagement ring websites"
+tags: ["xgboost","diamonds","regression"]
+categories: ["data science"]
 ---
 
 Time for a brief personal note. On January 29th 2021, I took the big leap and proposed to my girlfriend, Emma, at L'Auberge Resort in Sedona, Arizona. Thankfully, she said yes and we had an amazing weekend together. This photo below was taken by our photographer minutes after the proposal and captures a moment of pure bliss.
-<br><br>
-![victory-photo](/img/diamonds-forever/victory-photo.JPG)
-<br>
+
+<p align="center">
+    <img src="/img/diamonds-forever/victory-photo.JPG">
+</p>
+
+
 While I could definitely write more about the weekend we had, I am instead going to spend the rest of this post writing about something I wish I had found better information about online before I proposed, diamond engagement rings.
 
-# Background
+## Background
 
 If you are like me when I was going through the process of looking for a diamond engagement ring online, I suspect that at times you will waffle between feelings of extreme uncertainty about what you are purchasing to feelings of extreme blasè or as Drake says, YOLO. The advice I seemed to collect from chatting with most of my engaged or married friends was, learn the 4 Cs (Cut, Color, Clarity, Carat) and to quote my friend Catherine, "*if you love her, spend all your money*". While this is sage advice and I did eventually purchase a ring -- I won't disclose from where or how much I spent -- I was left wanting for more in-depth information about what diamonds cost and a better explanation why. Lo and behold, here we are. 
 
@@ -22,7 +28,7 @@ My strategy for figuring out why diamonds cost what they do in two parts:
 
 **Disclaimer** The rest of this post will focus on understanding diamond price. While, rings and settings are still important and a decent chunk of change, the vast majority of  most engagement rings is the diamond gemstone and settings are easier to understand and price compare. 
 
-# Digging for Diamond Data
+## Digging for Diamond Data
 
 Apparently there is already a well known public diamond dataset that is used frequently by the data science community. The popular python visualization package, Seaborn, installs with the [diamonds dataset](https://github.com/mwaskom/seaborn-data) by default. I probably could have saved myself a lot of time by making use of the public dataset, but I do not feel that the data accurately represents the diamonds and prices that I came across when I myself was looking at diamonds online.  
 
@@ -55,7 +61,7 @@ Here is an interactive plot showing carat and log price grouped by vendor and wh
 <br>
 We shouldn't be shocked to find that there is a strong correlation between carat and price. Calculating an R^2 value for the graph above, I found that ~67% of the variation in log price is explained by carat. Its also apparent from the graph classifying a diamond as a "lab" or "loose" diamond has a large impact on price.
 
-# What the hell are lab diamonds any way? 
+### What the hell are lab diamonds any way? 
 
 [Lab diamonds](https://en.wikipedia.org/wiki/Synthetic_diamond#Gemstones) are real diamonds, full stop. In fact...
 
@@ -65,7 +71,7 @@ Lab diamonds that are used as gemstones are produced using CVD (Chemical Vapor D
 
 ...anyways...back to the data.
 
-# Linear Model
+## Linear Model
 One obvious way to try to get a sense of what features have the greatest impact on diamond price is to run a simple linear regression using the natural logarithm of price as a dependent variable. Why log transform your dependent variable you might say? The short answer here is that you always want to avoid skewed distribution in the residuals. By using a log transformation, we are reducing skewness in our dependent variable and approximating a normal distribution thus helping to alleviate this risk. An additional benefit of using the natural log to transform our dependent variable is that it makes interpretation of the coefficients relatively straightforward as a coefficient of `.15` equates to a percentage increase of `(exp(.15) - 1) * 100` in our dependent variable: 
 
 ```
@@ -150,7 +156,7 @@ print(mse, r[0]**2)
 ```
 But looking closely at the chart we can see places where the predictions have larger residuals. Additionally, we see a bit of a pattern where the linear model over predicts on higher and lower prices and somewhat systematically under predicts on prices more towards the middle of the range. Still, we're making fairly accurate predictions.
 
-# Hey! I'm just a bloke trying to buy a diamond ring!
+### Hey! I'm just a bloke trying to buy a diamond ring!
 One motivation for doing all of this work and putting all of this together is to help people make more informed decisions when they are shopping online for engagement rings. Below is a quickly thrown together table where I've converted the coefficients from the linear model above into percentage changes, titled "p_delta", using the formula I've described earlier. This makes it easier to draw insights from our model as the "p_delta" equates to the percentage change in diamond price we estimate from the model due to a 1 unit change in our independent variable. For example, the linear model estimates between a 444%-446% increase in diamond price for a 1 unit change in diamond carat.  
 
 ```
@@ -192,7 +198,7 @@ One motivation for doing all of this work and putting all of this together is to
 ```
 At this point, I want to state a few personal, loosely formed theories on diamond prices. First, I believe that diamonds are competitively priced and prices aren't likely to deviate greatly from one jeweler to another (at least this appears true online). Second, features that contribute to a diamonds price are fundamentally linked human beliefs of beauty and scarcity. I think the second theory is the most important for the average diamond shopper as he or she is likely to be more concerned with beauty rather than scarcity. Now, let's dig into the 4 Cs. Of the three websites I went through, I found Brilliant Earth's diamond education to be the best and I will include some links in the below sections.
 
-## Carat
+### Carat
 Ok first things first, [carat](https://www.brilliantearth.com/diamond-carat-ranges/) is not a measure of the size of a diamond but the weight. One carat is equal to 0.2 grams and the name carat and the weight measurement comes from the carob seed which was considered fairly uniform in weight and used as a counterbalance by early gem traders.
 
 In my personal opinion and as evidenced by impact on price, diamond carat is the most important of all of the 4 Cs. The size of the diamond enhances other features that are more exclusively focused on beauty like cut. A bigger diamond lets in more light and therefore has more sparkle or "fire". To give a sense of diamond "size", the chart below plots what I am calling "horizontal area" in mm^2 relative to carat weight. For reference, a US dime a diameter of 17.91 mm and a 2.7-2.8 carat round diamond has a diameter of ~1/2 that of a dime. 
@@ -204,7 +210,7 @@ In my personal opinion and as evidenced by impact on price, diamond carat is the
 Lastly, here is an interesting tidbit from the Brilliant Earth diamond education section that lends some credence to our linear model:
 >Diamond prices actually rise exponentially with carat weight rather than linearly. For example, a 1.00 ct. diamond of a given quality is always valued higher than two 0.50 ct. diamonds of the same quality. In fact, a general rule of thumb is that a diamond of double the weight costs around four times more.
 
-## Cut
+### Cut
 [Cut](https://www.brilliantearth.com/diamond-cuts/) doesn't refer to shape but instead to proportion. While it is entirely possible that my mapping of categories of cut across websites the three websites is inaccurate, cut seems to have little impact on price even when looking at solely one website. 
 
 <br>
@@ -213,7 +219,7 @@ Lastly, here is an interesting tidbit from the Brilliant Earth diamond education
 
 In the chart above, Brilliant Earth uses the following categorization to refer to cut quality from lowest to highest quality: `['Fair', 'Good', 'Very Good', 'Ideal', 'Super Ideal']`. All of this is evidence to say that cut feels like a feature where it isn't necessary to focus on having the "best" possible, nor does it really impact the price much. 
 
-## Color
+### Color
 <br>
 {{< plotly json="/plotly/diamonds-forever/be-color-carat.json" height="400px" >}}
 <br>
@@ -239,7 +245,7 @@ My opinion here is that unlike cut or clarity for most gemstone quality diamonds
 
 Going from an `I` colored diamond to the highest possible quality of color, `D`, represents a ~72 % increase in price while going from an `I` to an `H` is a ~40% increase in price. 
 
-## Clarity
+### Clarity
 <br>
 {{< plotly json="/plotly/diamonds-forever/be-clarity-carat.json" height="400px" >}}
 <br>
@@ -260,7 +266,7 @@ Next to carat and color, [clarity](https://www.brilliantearth.com/diamond-clarit
 ```
 Flawless diamonds are exceedingly rare and a hefty premium is charged for them. Below the "flawless" categorization, there appear to be fairly regular price differences in each step of the clarity quality ladder. While I can't truly back this claim up with data, I can say that in conversations with friends and also from my diamond shopping experience, it did not appear to me that clarity was actually that important to the beauty of the diamond above the SI1 and S12 classifications. Above this breakpoint, inclusions can only really be seen in 10x magnification and would not be discernable by the naked eye. Going back to my loosely held beliefs about diamond prices, I think that clarity contributes to a diamonds price more due to its effect on perceptions of rarity rather than objective beauty. 
 
-# XGB Model
+## XGB Model
 
 One of the benefits of always using a linear model as a starting point for an analysis like this is that it provides easy explainability of the coefficients and their respective impacts on the model's predictions. As models get more and more complex, understanding what is going on inside of the "black box" becomes increasingly challenging. This is a pretty common trade-off people talk about in machine learning and its normally referenced as the "accuracy vs explainability" problem.
 
@@ -287,7 +293,7 @@ xg_reg = xgb.XGBRegressor(
 
 Ok. So its obvious, that our XGB model is great at predicting diamond prices. The chart above has a calculated R^2 of 98.9 and an MSE of 0.011, which doesn't mean anything until you go back and compare this to the MSE of the linear model 0.17. This is great but this post is about saying something intelligent about diamond prices so what does the XGB model tell us?
 
-## Shap values
+### Shap values
 ![xgb-features](/img/diamonds-forever/xgb-feature-importance.png)
 
 The chart above shows us the model's calculated Shapley values for each feature and is meant to demonstrate feature importance. Before diving in more, one important aspect of understanding Shap is that Shapley values are derived in an additive nature. This means that a feature's Shap value is calculated by comparing the predicted output to the score of the model prior to adding that feature. In a multivariate model all of our Shap values are additive on top of a baseline and this baseline is easiest to think of as the average value of the predicted dependent variable in our training dataset. 
@@ -312,7 +318,7 @@ To help understand Shap values a little better, let's look at some individual ex
 
 The baseline value that the model uses as a starting point is 7.694 representing the average of the natural log of the model's predicted diamond price for the training data set. The Shapley values show each feature's importance in the resulting predicted score for the diamond of 6.51. `is_lab`, `carat`, and the fact that the diamond is not a round cut but instead an emerald all contribute negatively to the predicted price relative to the base score. Interestingly, `carat` also contributes negatively to the base score but this is because our carat measurement of 0.62 is below the mean carat measurement for diamonds in our training set. 
 
-## Shap is cool and all but why do this?
+### Shap is cool and all but why do this?
 I had a couple of reasons why I wanted to build an XGBoost regression model and use Shap for interpretation beyond wanting very accurate predictions of diamond prices. Namely:
 - I wasn't convinced that assuming a linear relationship between diamond prices and our feature set was accurate
 - I was fairly confident that there is "some" correlation between independent variables. For example, clarity might have a larger impact on price the larger a diamonds carat becomes. This intuitively makes sense but leads to problems with the coefficients of my linear model. 
@@ -341,6 +347,6 @@ Having looked at many of these interaction effects, I can tell you that there ar
 
 There aren't any noticeable trends to higher order effects for James Allen diamonds. However, we can see clear trends for Blue Nile and Brilliant Earth diamonds with Brilliant Earth being slightly less expensive for diamonds greater than 1 carat and Blue Nile being less expensive for diamonds below 1 carat.
 
-# Conclusion
+## Conclusion
 
 I know that for me personally, buying a diamond engagement ring was a nerve racking experience. My goal for this post was to give people a better sense of how diamonds are priced and what you might be getting for your money. I also hope that it was at least somewhat interesting. I wish you good fortune in your search and hope that I helped some way in some small bit. 
