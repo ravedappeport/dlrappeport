@@ -5,6 +5,7 @@ lastmod: 2021-09-19T20:08:33Z
 draft: false
 plotly: true
 description: "An attempt to create a simplified version of the University of Vermont's Hedonometer and see what we can do with it"
+summary: "An attempt to create a simplified version of the University of Vermont's Hedonometer and see what we can do with it"
 tags: ["trump", "twitter","hedonometer","sentiment analysis"]
 categories: ["data science"]
 ---
