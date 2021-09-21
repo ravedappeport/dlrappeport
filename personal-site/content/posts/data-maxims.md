@@ -13,7 +13,7 @@ categories: ["startups"]
 </p>
 
 ## Background
-Sometimes life finds a way of telling you to sit down and write a blog post. The same week that a friend of a friend asked me for some advice around making the first data hire at his startup Erik Bernhardsson's fictional narrative about[building data teams at startups](https://erikbern.com/2021/07/07/the-data-team-a-short-story.html) was going viral. Many in the Analytics blogo-sphere took notice or have been writing about similar things for a long time. What is the [modern data experience](https://benn.substack.com/p/the-modern-data-experience#footnote-1)? What do [data people call themselves and how do they specialize](https://blog.getdbt.com/we-the-purple-people/)? What is the [future of the data platform](https://martinfowler.com/articles/data-monolith-to-mesh.html)? Are analysts [honeydew or are they cantaloupe](https://benn.substack.com/p/third-rail)?
+Sometimes life finds a way of telling you to sit down and write a blog post. The same week that a friend of a friend asked me for some advice around making the first data hire at his startup [Erik Bernhardsson's](https://erikbern.com/2021/07/07/the-data-team-a-short-story.html) fictional narrative about building data teams at startups was going viral. Many in the Analytics blogo-sphere took notice or have been writing about similar things for a long time. What is the modern data [experience](https://benn.substack.com/p/the-modern-data-experience#footnote-1)? What [color](https://blog.getdbt.com/we-the-purple-people/) best describes data people? What is the future of the [data platform](https://erikbern.com/2021/07/07/the-data-team-a-short-story.html)? Are analysts honeydew or are they [cantaloupe](https://benn.substack.com/p/third-rail)?
 
 To be perfectly honest, whenever I have gotten similar questions in the past I usually point people to some of the blogs and authors linked above. Suffice it to say but a lot has been written on this topic already. If there is one opportunity for me to add a unique perspective to this debate I think it is this. I haven't yet found a clear rule set that helps to guide aspiring data-driven companies as they navigate the many winding paths between making their first data hire and growing scalable data functions. In my own experience, I have encountered many difficult trade-offs and decisions that aren't always obvious. So in one huge act of ego and bravado, I am setting out to create ten ...
 
@@ -23,4 +23,15 @@ To be perfectly honest, whenever I have gotten similar questions in the past I u
 
 ... 5 data ~~commandments~~ maxims to live by. 
 
-## 1. Start at the Center
+## 5 Data maxims to live by
+### 1. Start at the center
+Especially in the very beginning, resist the urge to specialize. It seems to me like there is a recurring theme where somewhere between series A and B rounds, or roughly the 20-30 employee mark, startups look to hire data people for the first time. 
+
+### 2. Learn to embrace technical debt
+
+### 3. Everyone is a data owner
+
+### 4. Insights is a people business
+
+### 5. The data platform is a production platform 
+
