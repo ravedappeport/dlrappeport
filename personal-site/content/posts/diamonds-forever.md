@@ -5,6 +5,7 @@ lastmode: 2021-09-19T20:08:33Z
 draft: false
 plotly: true
 description: "Data driven investigation of diamond pricing on three of the most popular online engagement ring websites"
+summary: "Data driven investigation of diamond pricing on three of the most popular online engagement ring websites"
 tags: ["xgboost","diamonds","regression"]
 categories: ["data science"]
 ---

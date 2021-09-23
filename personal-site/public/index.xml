@@ -4,24 +4,29 @@
         <link>/</link>
         <description>Personal website of me, David L Rappeport, and a place where I hope to keep myself intellectually honest about topics that interest me.</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>david.l.rappeport@gmail.com (David L Rappeport)</managingEditor>
-            <webMaster>david.l.rappeport@gmail.com (David L Rappeport)</webMaster><lastBuildDate>Sun, 21 Feb 2021 18:28:25 &#43;0000</lastBuildDate>
+            <webMaster>david.l.rappeport@gmail.com (David L Rappeport)</webMaster><lastBuildDate>Thu, 23 Sep 2021 04:31:28 &#43;0000</lastBuildDate>
             <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
         <item>
+    <title>Some Startup Data Maxims</title>
+    <link>/data-maxims/</link>
+    <pubDate>Thu, 23 Sep 2021 04:31:28 &#43;0000</pubDate>
+    <author>Author</author>
+    <guid>/data-maxims/</guid>
+    <description><![CDATA[I&rsquo;ve sat on the fence for a while about writing this post. Here are some strong convictions loosely held about data teams and data infrastructure at startups]]></description>
+</item><item>
     <title>Diamonds Forever</title>
     <link>/diamonds-forever/</link>
     <pubDate>Sun, 21 Feb 2021 18:28:25 &#43;0000</pubDate>
     <author>Author</author>
     <guid>/diamonds-forever/</guid>
-    <description><![CDATA[Time for a brief personal note. On January 29th 2021, I took the big leap and proposed to my girlfriend, Emma, at L&rsquo;Auberge Resort in Sedona, Arizona. Thankfully, she said yes and we had an amazing weekend together. This photo below was taken by our photographer minutes after the proposal and captures a moment of pure bliss.
-While I could definitely write more about the weekend we had, I am instead going to spend the rest of this post writing about something I wish I had found better information about online before I proposed, diamond engagement rings.]]></description>
+    <description><![CDATA[Data driven investigation of diamond pricing on three of the most popular online engagement ring websites]]></description>
 </item><item>
     <title>Hedonometer</title>
     <link>/hedonometer/</link>
     <pubDate>Mon, 21 Dec 2020 14:10:46 &#43;0000</pubDate>
     <author>Author</author>
     <guid>/hedonometer/</guid>
-    <description><![CDATA[Background About two months ago, I was introduced to a work of the University of Vermont Computational Story Lab called the Hedonometer. At its core, the Hedonometer is a large scale NLP application based on Twitter data and is used to measure &ldquo;happiness&rdquo; at scale. The creators do a great job summarizing this here:
- “What is being measured by the instrument?” hedonometer.org currently measures Twitter’s Decahose API feed (formerly Gardenhose).]]></description>
+    <description><![CDATA[An attempt to create a simplified version of the University of Vermont&rsquo;s Hedonometer and see what we can do with it]]></description>
 </item><item>
     <title>Coming Soon</title>
     <link>/coming-soon/</link>
