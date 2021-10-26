@@ -202,8 +202,8 @@ theme = "LoveIt"
 
   # Social config about the author
   [params.social]
-    GitHub = "https://github.com/ravedappeport/dlrappeport"
-    Linkedin = "https://www.linkedin.com/in/david-rappeport-014b1292/"
+    GitHub = "ravedappeport/dlrappeport"
+    Linkedin = "david-rappeport-014b1292/"
     Twitter = ""
     Instagram = ""
     Facebook = ""
@@ -265,7 +265,7 @@ theme = "LoveIt"
     Matrix = ""
     Bilibili = ""
     Email = "david.l.rappeport@gmail.com"
-    RSS = true # 
+    RSS = false # 
 
   #  Page config
   [params.page]
