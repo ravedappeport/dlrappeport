@@ -23,3 +23,5 @@ personal-site/static/img
 # Hugo default output directory
 personal-site/public
 
+# cache
+.cache
