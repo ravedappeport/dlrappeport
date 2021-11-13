@@ -2,9 +2,6 @@
 
 {{- define "content" -}}
     {{- $params := .Scratch.Get "params" -}}
-    {{ if .Params.plotly }}
-        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    {{ end }}
 
     {{- $toc := $params.toc -}}
     {{- if eq $toc true -}}
