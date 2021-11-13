@@ -6,7 +6,7 @@ languageCode = "en"
 title = "David L. Rappeport"
 
 # Change the default theme to be use when building the site with Hugo
-theme = "LoveIt"
+theme = "LoveIt-0.2.10"
 
 [taxonomies]
   categories = 'categories'
@@ -76,7 +76,7 @@ theme = "LoveIt"
   #  date format
   dateFormat = "2006-01-02"
   # website images for Open Graph and Twitter Cards
-  images = ["/static/dlrSunapeeIcon.ico"]
+  images = ["/static/hat-penny.ico"]
 
 # App icon config
 [params.app]
@@ -85,7 +85,7 @@ theme = "LoveIt"
     # whether to omit favicon resource links
     noFavicon = false
     # modern SVG favicon to use in place of older style .png and .ico files
-    svgFavicon = "dlrSunapeeIcon.ico"
+    svgFavicon = "hat-penny.ico"
     # Android browser theme color
     themeColor = "#ffffff"
     # Safari mask icon color
@@ -180,11 +180,17 @@ theme = "LoveIt"
       # Gravatar Email for preferred avatar in home page
     #   gravatarEmail = ""
       # URL of avatar shown in home page
-      avatarURL = "dlrSunapeeIcon.ico"
+      avatarURL = "hat-penny.ico"
       #  title shown in home page (HTML format is supported)
-      title = ""
+      title = "Sometimes Not Nonsense"
       # subtitle shown in home page
-      subtitle = "From the mind of Dave Rappeport ..."
+      subtitle = """
+      The sea was angry that day, my friends - like an old man trying to send back soup in a deli. 
+      I got about fifty feet out and suddenly, the great beast appeared before me. 
+      I tell you he was ten stories high if he was a foot. As if sensing my presence, he let out a great bellow. 
+      I said, "Easy, big fella!" And then, as I watched him struggling, I realized that something was obstructing its breathing. 
+      From where I was standing, I could see directly into the eye of the great fish.
+      """
       # whether to use typeit animation for subtitle
       typeit = true
       # whether to show social links
@@ -451,7 +457,7 @@ theme = "LoveIt"
   #  TypeIt config
   [params.typeit]
     # typing speed between each step (measured in milliseconds)
-    speed = 100
+    speed = 85
     # blinking speed of the cursor (measured in milliseconds)
     cursorSpeed = 1000
     # character used for the cursor (HTML format is supported)
