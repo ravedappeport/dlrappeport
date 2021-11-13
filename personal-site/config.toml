@@ -208,8 +208,8 @@ theme = "LoveIt-0.2.10"
 
   # Social config about the author
   [params.social]
-    GitHub = "/ravedappeport/dlrappeport"
-    Linkedin = "/david-rappeport-014b1292/"
+    GitHub = "ravedappeport/dlrappeport"
+    Linkedin = "david-rappeport-014b1292/"
     Twitter = ""
     Instagram = ""
     Facebook = ""
@@ -271,7 +271,7 @@ theme = "LoveIt-0.2.10"
     Matrix = ""
     Bilibili = ""
     Email = "david.l.rappeport@gmail.com"
-    RSS = true # 
+    RSS = false # 
 
   #  Page config
   [params.page]
