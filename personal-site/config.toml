@@ -76,7 +76,7 @@ theme = "LoveIt"
   #  date format
   dateFormat = "2006-01-02"
   # website images for Open Graph and Twitter Cards
-  images = ["/static/dlrSunapeeIcon.ico"]
+  images = ["/static/hat-penny.jpeg"]
 
 # App icon config
 [params.app]
@@ -85,7 +85,7 @@ theme = "LoveIt"
     # whether to omit favicon resource links
     noFavicon = false
     # modern SVG favicon to use in place of older style .png and .ico files
-    svgFavicon = "dlrSunapeeIcon.ico"
+    svgFavicon = "hat-penny.jpeg"
     # Android browser theme color
     themeColor = "#ffffff"
     # Safari mask icon color
@@ -138,7 +138,7 @@ theme = "LoveIt"
   [params.footer]
     enable = true
     #  Custom content (HTML format is supported)
-    custom = ''
+    custom = ""
     #  whether to show Hugo and theme info
     hugo = true
     #  whether to show copyright info
@@ -178,9 +178,9 @@ theme = "LoveIt"
     [params.home.profile]
       enable = true
       # Gravatar Email for preferred avatar in home page
-    #   gravatarEmail = ""
+      gravatarEmail = ""
       # URL of avatar shown in home page
-      avatarURL = "dlrSunapeeIcon.ico"
+      avatarURL = "hat-penny.jpeg"
       #  title shown in home page (HTML format is supported)
       title = ""
       # subtitle shown in home page
@@ -204,68 +204,8 @@ theme = "LoveIt"
   [params.social]
     GitHub = "ravedappeport/dlrappeport"
     Linkedin = "david-rappeport-014b1292/"
-    Twitter = ""
-    Instagram = ""
-    Facebook = ""
-    Telegram = ""
-    Medium = ""
-    Gitlab = ""
-    Youtubelegacy = ""
-    Youtubecustom = ""
-    Youtubechannel = ""
-    Tumblr = ""
-    Quora = ""
-    Keybase = ""
-    Pinterest = ""
-    Reddit = ""
-    Codepen = ""
-    FreeCodeCamp = ""
-    Bitbucket = ""
-    Stackoverflow = ""
-    Weibo = ""
-    Odnoklassniki = ""
-    VK = ""
-    Flickr = ""
-    Xing = ""
-    Snapchat = ""
-    Soundcloud = ""
-    Spotify = ""
-    Bandcamp = ""
-    Paypal = ""
-    Fivehundredpx = ""
-    Mix = ""
-    Goodreads = ""
-    Lastfm = ""
-    Foursquare = ""
-    Hackernews = ""
-    Kickstarter = ""
-    Patreon = ""
-    Steam = ""
-    Twitch = ""
-    Strava = ""
-    Skype = ""
-    Whatsapp = ""
-    Zhihu = ""
-    Douban = ""
-    Angellist = ""
-    Slidershare = ""
-    Jsfiddle = ""
-    Deviantart = ""
-    Behance = ""
-    Dribbble = ""
-    Wordpress = ""
-    Vine = ""
-    Googlescholar = ""
-    Researchgate = ""
-    Mastodon = ""
-    Thingiverse = ""
-    Devto = ""
-    Gitea = ""
-    XMPP = ""
-    Matrix = ""
-    Bilibili = ""
     Email = "david.l.rappeport@gmail.com"
-    RSS = false # 
+    RSS = false
 
   #  Page config
   [params.page]
@@ -479,7 +419,7 @@ theme = "LoveIt"
     enable = false
     # Google Analytics
     [params.analytics.google]
-    #   id = "UA-123-45"
+      # id = "UA-123-45"
       # whether to anonymize IP
       anonymizeIP = true
     # Fathom Analytics

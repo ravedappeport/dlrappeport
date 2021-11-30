@@ -25,3 +25,6 @@ personal-site/public
 
 # cache
 .cache
+
+#build lock
+.hugo_build.lock
