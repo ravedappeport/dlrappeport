@@ -2,7 +2,7 @@
 data/
 
 # DS_Store
-.DS_Store
+*.DS_Store
 
 # csvs
 *.csv
@@ -18,11 +18,11 @@ data/
 personal-site/static/img
 
 # ipynb_checkpoints
-.ipynb_checkpoints
+*.ipynb_checkpoints
 
 # Hugo default output directory
 personal-site/public
 
 # cache
-.cache
-.hugo.lock
+*.cache
+*.hugo_build.lock

@@ -552,7 +552,7 @@ theme = "LoveIt-0.2.10"
 [author]
   name = "David L Rappeport"
   email = "david.l.rappeport@gmail.com"
-  link = "/about/about"
+  link = "/about"
 
 # Sitemap config
 [sitemap]
