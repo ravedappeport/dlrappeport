@@ -441,10 +441,6 @@ researchgate:
 # 056: Mastodon
 mastodon:
   Weight: 56
-<<<<<<< HEAD
-  Prefix: https://mastodon.social/
-=======
->>>>>>> coros
   Title: Mastodon
   Icon:
     Class: fab fa-mastodon fa-fw
@@ -455,11 +451,7 @@ thingiverse:
   Prefix: https://www.thingiverse.com/
   Title: Thingiverse
   Icon:
-<<<<<<< HEAD
-    Src: svg/icons/thingiverse.svg
-=======
     Simpleicons: thingiverse
->>>>>>> coros
 
 # 058: Dev.To
 devto:
