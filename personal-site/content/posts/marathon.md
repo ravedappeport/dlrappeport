@@ -7,7 +7,7 @@ plotly: true
 description: "A post about setting goals and running"
 summary: "lessons learned from setting goals and running"
 tags: ["motivation", "running"]
-categories: ["misc"]
+categories: ["health"]
 ---
 
 ## Intro
