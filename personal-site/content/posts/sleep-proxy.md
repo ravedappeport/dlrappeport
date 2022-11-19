@@ -2,11 +2,11 @@
 title: "Sleep, TLS, and HTTP Proxies"
 date: 2022-11-18T08:22:35-0500
 lastmode: 2022-11-18T08:22:35-0500
-draft: true
+draft: false
 plotly: true
 description: "Learning to proxy my phone network traffic to get more data from my apps"
 summary: "A little bit about sleep and a lot about internet security"
-tags: ["internet", "running", "security", "data", "sleep", "health"]
+tags: ["internet", "running", "security", "data", "sleep"]
 categories: ["health"]
 ---
 

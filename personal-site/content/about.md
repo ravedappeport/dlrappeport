@@ -5,14 +5,10 @@ draft: false
 ---
 
 <p align="center">
-    <img src="/img/aboutMe/dlrappeport.jpeg">
+    <img src="/img/aboutMe/dlrappeport.jpeg" width="300">
 </p>
 
-I live in New York City and currently work at Bread, a technology company that partners with e-commerce merchants and financial institutions to create pay over time solutions. This is my personal website and a place where I hope to keep myself intellectually honest about topics that interest me. At the moment, these topics fall broadly into the following:
-
-- Interesting data stuff
-- Technology and startups
-- Anything else I may feel like writing about in a particular month
+I live in New York City and currently work as a Product Manager at [Vareto](https://www.vareto.com/), a technology startup hoping to build the future of financial planning and analysis software. This is my personal website and a place where I hope to keep myself intellectually honest about topics that interest me. 
 
 
 
