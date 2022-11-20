@@ -12,29 +12,29 @@ categories: ["health"]
 
 ## Background
 
-When I decided to get more serious about running, I made an investment in a running watch. Wirecutter and Amazon reviews led me to purchase the [COROS Apex Pro](https://www.amazon.com/Coros-Premium-Multisport-Watch-Black/dp/B07XZHKM7R). Compared to similarly priced running watches, the Apex Pro had two killer features for me: 
+When I decided to get more serious about running, I bought a running watch. Wirecutter and Amazon reviews convinced me to purchase the [COROS Apex Pro](https://www.amazon.com/Coros-Premium-Multisport-Watch-Black/dp/B07XZHKM7R) and compared to similarly watches, the Apex Pro had two killer features for me: 
 1. It has an incredible battery life 
 2. It tracks different sleep statistics that I was interested in. 
 
-COROS, like Garmin and other similar companies, offers a smart phone app that is free to use with purchase of a compatible watch. COROS's app is beautifully designed and I love it but its big flaw (for me) is that I can't easily bulk export my sleep or other health data that the app has access to. 
+COROS, like Garmin and other similar companies, has a smart phone app that is free to use with purchase of a compatible watch. The COROS app is beautifully designed and I love it...BUT... it has a big flaw (for me). I can't easily bulk export my sleep or other health data that the app has access to. 
 
-Not to be stopped from getting what I want. I learned that I can "trick" COROS's servers to sending me the data I want by proxying and modifying the network traffic being sent from my iPhone to COROS. This post is an exploration into why I wanted my sleep data so badly and some of the things that I learned about proxy servers and internet security. 
+Not to be stopped from getting what I want, I learned that I can "trick" COROS's servers to sending me the data I want by proxying and modifying the network traffic being sent from my iPhone to COROS. This post is an exploration into why I wanted my sleep data so badly and some of the things that I learned about proxy servers and internet security. 
 
 ## Why do I care about sleep?
 
-A few months ago, a friend recommended that I read Matthew Walker's "Why We Sleep". 
+A few months ago, a friend recommended I read Matthew Walker's "Why We Sleep". 
 
 <p align="center">
 <iframe type="text/html" sandbox="allow-scripts allow-same-origin allow-popups" width="336" height="550" frameborder="0" allowfullscreen style="max-width:100%" src="https://read.amazon.com/kp/card?asin=B06ZZ1YGJ5&preview=inline&linkCode=kpe&ref_=cm_sw_r_kb_dp_DFX815KW310V447DERDE" ></iframe>
 </p>
 
-Prior to reading this book, I had always been someone who prided himself on my ability to function on little to no sleep. In high school, I would volunteer as an EMT once a week every Thursday night and that meant I came to school most Fridays without really sleeping. In college, I would frequently pull all nighters before important exams or due dates. I never thought this was a problem. In fact, I was proud of my ability "not sleep". As an adult, there was less need to be up all night for School or extra curricular activities, but I never prioritized sleep. This book completely shifted my way of thinking!!!
+Prior to reading this book, I had always been someone who prided himself on my ability to function on little to no sleep. In high school, I volunteered as an EMT every Thursday night and that meant I came to school most Fridays without really sleeping. In college, I would frequently pull all nighters before important exams or due dates. I never thought this was a problem. In fact, I was proud of my ability "not sleep". As an adult, there was less need to be up all night for School or extra curricular activities, but I never prioritized sleep. This book completely shifted my way of thinking!!!
 
-It turns out that prolonged, habitual lack of sleep is highly correlated with both academic performance and chronic illness, not to mention [athletic performance](https://www.sleepfoundation.org/physical-activity/athletic-performance-and-sleep). An [MIT study](https://www.nature.com/articles/s41539-019-0055-z) published in Nature, found that Sleep measures accounted for nearly 25% of the variance in academic performance. Studies linking persistent lack of sleep to chronic illness such as cancer have not always been conclusive, however, one [large scale study](https://pubmed.ncbi.nlm.nih.gov/22295122/) in Europe found the following: 
+It turns out that habitual lack of sleep is highly correlated with both academic performance and chronic illness, not to mention [athletic performance](https://www.sleepfoundation.org/physical-activity/athletic-performance-and-sleep). An [MIT study](https://www.nature.com/articles/s41539-019-0055-z) published in Nature, found that Sleep measures accounted for nearly 25% of the variance in academic performance. Studies linking persistent lack of sleep to chronic illness such as cancer have not always been conclusive, however, one [large scale study](https://pubmed.ncbi.nlm.nih.gov/22295122/) in Europe found the following: 
 
 > Results: During a mean follow-up period of 7.8 years 841 incident cases of type 2 diabetes, 197 cases of myocardial infarction, 169 incident strokes, and 846 tumor cases were observed. Compared to persons sleeping 7-<8 h/day, participants with sleep duration of <6 h had a significantly increased risk of stroke (Hazard Ratio (HR) = 2.06, 95% confidence interval (CI): 1.18-3.59), cancer (HR = 1.43, 95% CI: 1.09-1.87), and overall chronic diseases (HR = 1.31, 95% CI: 1.10-1.55) in multivariable adjusted models. Self-reported daytime sleep at baseline was not associated with incident chronic diseases in the overall study sample. However, there had been an effect modification of daytime sleep by hypertension showing that daytime sleep was inversely related to chronic disease risk among non-hypertensive participants but directly related to chronic diseases among hypertensives.
 
-I had to quickly google [Hazard Ratio](https://en.wikipedia.org/wiki/Hazard_ratio)(s) but it turns out they are simple to interpret. The post from the study above found that people who self reported an average of less than 6 hours of sleep per day were twice as likely to suffer a stroke, ~40% more likely to develop cancer, and ~30% more likely to have any chronic disease compared to participants. This study has been cited by over 200 other academic papers and, on a personal note, stats like this have floored me. I want to also point out that only recently are we in a day and age where many people have fitness trackers that they are wearing to bed and tracking sleep. The findings from the potsdam study relied on self-reported data. In the next couple years, I expect Sleep Research to become more mainstream and influential within Healthcare as the size and accuracy of data improves. 
+I had to quickly google [Hazard Ratio](https://en.wikipedia.org/wiki/Hazard_ratio)(s) but it turns out they are simple to interpret. The post from the study above found that people who self reported an average of less than 6 hours of sleep per day were twice as likely to suffer a stroke, ~40% more likely to develop cancer, and ~30% more likely to have any chronic disease compared to participants. This study has been cited by over 200 other academic papers. Stats like this have floored me. Als, we only recently are in a day and age where many people have fitness trackers that they are wearing to bed and tracking sleep. The findings from the Potsdam study relied on self-reported data. In the next couple years, I believe sleep and sleep research will become more influential within Healthcare as the size and quality of data improves. 
 
 **Why do I care about sleep?** It might be the single, greatest contributing factor related to improved mental performance and long term health outcomes and it is mostly within my control. 
 
@@ -42,7 +42,7 @@ I had to quickly google [Hazard Ratio](https://en.wikipedia.org/wiki/Hazard_rati
 
 Ok, time for some technical stuff. 
 
-Put simply and according to [Wikipedia](https://en.wikipedia.org/wiki/Proxy_server), a proxy is a server application that sits in between a client requesting resources and a server providing that resource. For my purposes, I want to a proxy server that can sit between my iPhone and COROS's application servers. 
+Put simply and according to [Wikipedia](https://en.wikipedia.org/wiki/Proxy_server), a proxy is a server application that sits in between a client requesting resources and a server providing that resource. For my purposes, I want to set up a proxy server that can sit between my iPhone and COROS's application servers. 
 
 Two very good, mostly free proxy applications I found on the web are [mitmproxy](https://mitmproxy.org/) and [Charles Proxy](https://www.charlesproxy.com/).
 
