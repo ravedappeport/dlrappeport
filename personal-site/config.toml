@@ -52,14 +52,21 @@ theme = "LoveIt-0.2.10"
     url = "/categories/"
     title = ""
     weight = 3
-    [[menu.main]]
+  [[menu.main]]
+    identifer = "Projects"
+    name = "Projects"
+    url = "/projects/"
+    title = ""
+    weight = 4
+  [[menu.main]]
     identifier = "About"
     pre = ""
     post = ""
     name = "About"
     url = "/about/"
     title = ""
-    weight = 3
+    weight = 5
+
 
 [params]
   #  LoveIt theme version
