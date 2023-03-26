@@ -6,7 +6,7 @@ draft: false
 description: "Strong convictions loosely held about how to build data teams and data infrastructure"
 summary: "I've sat on the fence for a while about writing this post. Here are some strong convictions loosely held about data teams and data infrastructure at startups"
 tags: ["startups","management","infrastructure","organization"]
-categories: ["startups"]
+categories: ["tech"]
 ---
 
 <p align="center">
