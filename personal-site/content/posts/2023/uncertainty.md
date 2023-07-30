@@ -14,9 +14,13 @@ categories: ["misc"]
 
 I have [previously written](/career-change/) about why I made the decision to become a product manager. Now after more than a year in the role, it is still difficult to explain what product management is to someone who has never been a PM. If you were to ask the internet what product management is, you might get something like the below.
 
+<br>
+
 <p align="center">
     <img src="/img/uncertainty/chat-gpt-product-management.png" height=50%>
 </p>
+
+<br>
 
 I think I actually may have a more succinct definition that I believe better captures the *essence* of product management. First, lets assume that the goal of every commercial enterprise is to sell a set of goods or services, aka "products", so as to maximize profitability and ensure future growth. Second, let's also say that all three of these domains -- product, profitability, and future growth -- are interconnected and interdependent. You cannot make good decisions about products without considering profitability and future growth and vice versa. Therefore the *essence* of a being a product manager is being responsible for helping an enterprise to make good business decisions amidst uncertainty. 
 
@@ -30,7 +34,7 @@ If you're reading this and thinking "what the hell does that mean?" or "what a d
     <img src="https://canny.io/blog/wp-content/uploads/2023/05/image-3.png" height=50%>
 </p>
 
-This section comes primarily from a friend and mentor of mine, Parilee Wang. Before ever becoming a PM, Parilee had told me that the primary responsibilities of a good product manager are *owning* the "What", "Why", and the "Why Now". The "What" is short for "what is the customer problem that the business is trying to solve". The "Why" is short for "why is this problem something the business should solve". Finally, the "Why Now" is short for "why should the business solve this problem now as opposed to focusing on something else". Together these three questions represent a framework for understanding and prioritizing the customer problems that a business should work towards solving. 
+This section comes primarily from a friend and mentor, Parilee Wang. Before ever becoming a PM, Parilee had told me that the primary responsibilities of a good product manager are *owning* the "What", "Why", and the "Why Now". The "What" is short for "what is the customer problem that the business is trying to solve". The "Why" is short for "why is this problem something the business should solve". Finally, the "Why Now" is short for "why should the business solve this problem now as opposed to focusing on something else". Together these three questions represent a framework for understanding and prioritizing the customer problems that a business should work towards solving. 
 
 <br>
 
@@ -65,3 +69,5 @@ A good product manager must have an idea of what the product solution should "so
 </p>
 
 ## Trust is Everything
+
+"Trust is the currency of speed"
