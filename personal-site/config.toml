@@ -4,9 +4,12 @@ defaultContentLanguage =  "en"
 # language code
 languageCode = "en"
 title = "David L. Rappeport"
-
 # Change the default theme to be use when building the site with Hugo
 theme = "LoveIt-0.2.10"
+# emojify function
+enableEmoji = true
+
+
 
 [taxonomies]
   categories = 'categories'
