@@ -4,8 +4,8 @@ date: 2023-07-30T19:33:05-0600
 lastmode: 2023-07-30T19:33:05-0600
 draft: false
 plotly: false
-description: "Reflections on product uncertainty and the \"sausage making\" that goes in to making good product decisions."
-summary: "Reflections on product uncertainty and the \"sausage making\" that goes in to making good product decisions."
+description: "Product uncertainty and the \"sausage making\" that goes in to making good product decisions."
+summary: "Product uncertainty and the \"sausage making\" that goes in to making good product decisions."
 tags: ["misc", "startups", "product-management"]
 categories: ["misc"]
 ---
