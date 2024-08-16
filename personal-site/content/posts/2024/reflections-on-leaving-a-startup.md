@@ -20,7 +20,7 @@ So when I was let go because the company I worked for wasn't able to meet the re
 
 <br>
 
-Everybody has a plan until they get punched in the face, right?. So what's my plan now? I'll move forward. I'll find new opportunities to prove myself, make an impact, and solve important problems. First though, I am going to make sure that I've learned everything I can from this experience and carry it forward with me.
+Everybody has a plan until they get punched in the face, right? So what's my plan now? I'll move forward. I'll find new opportunities to prove myself, make an impact, and solve important problems. First though, I am going to make sure that I've learned everything I can from this experience and carry it forward with me.
 
 ## Lessons Learned
 
