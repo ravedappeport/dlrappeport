@@ -5,9 +5,9 @@ draft: false
 ---
 
 <p align="center">
-    <img src="/img/aboutMe/dlrappeport.jpeg" width="300">
+    <img src="/img/aboutMe/chamonix-pirate-coffee-daverappeport.jpeg" width=50%>
 </p>
 
-I live in New York City and currently work as a Product Manager at [Vareto](https://www.vareto.com/), a technology startup hoping to build the future of financial planning and analysis software. All views and opinions are my own.
+I live in New York City and work as a senior product leader at technology companies. All views and opinions are my own.
 
 
